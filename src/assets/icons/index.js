@@ -38,6 +38,7 @@ import java from './java.png'
 // ✅ New social icons
 import upwork from './upwork.png'
 import khamsat_1 from './khamsat-1.svg'
+import mostaql from './mostaql.png' // <-- Added Mostaql
 
 // ✅ Experience logos
 import anu from './anu.png'
@@ -83,6 +84,7 @@ export {
     // ✅ New social
     upwork,
     khamsat_1,
+    mostaql, // <-- Exported Mostaql
     // ✅ Experience logos
     anu,
     nti,

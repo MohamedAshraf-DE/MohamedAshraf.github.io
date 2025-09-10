@@ -17,7 +17,8 @@ import {
     anu,
     nti,
     depi,
-    island
+    island,
+    mostaql, // ✅ import Mostaql icon
 } from "../assets/icons";
 
 // ====================== Skills ======================
@@ -78,8 +79,11 @@ export const socialLinks = [
     { name: "Contact", iconUrl: contact, link: "/contact" },
     { name: "GitHub", iconUrl: github, link: "https://github.com/MohamedAshraf-DE/MohamedAshraf.github.io" },
     { name: "LinkedIn", iconUrl: linkedin, link: "https://www.linkedin.com/in/mohamed--ashraff" },
+
+    // ✅ Freelance platforms grouped together
     { name: "Upwork", iconUrl: upwork, link: "https://www.upwork.com/freelancers/~0190a07e5b17474f9f?mp_source=share" },
     { name: "Khamsat", iconUrl: khamsat_1, link: "https://khamsat.com/user/mohamed_ashraf124" },
+    { name: "Mostaql", iconUrl: mostaql, link: "https://mostaql.com/u/MohamedA_Data" },
 ];
 
 // ====================== Projects ======================
