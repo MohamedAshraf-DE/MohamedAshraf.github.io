@@ -77,13 +77,33 @@ export const experiences = [{
 // ====================== Social Links ======================
 export const socialLinks = [
     { name: "Contact", iconUrl: contact, link: "/contact" },
-    { name: "GitHub", iconUrl: github, link: "https://github.com/MohamedAshraf-DE/MohamedAshraf.github.io" },
-    { name: "LinkedIn", iconUrl: linkedin, link: "https://www.linkedin.com/in/mohamed--ashraff" },
+    {
+        name: "GitHub",
+        iconUrl: github,
+        link: "https://github.com/MohamedAshraf-DE/MohamedAshraf.github.io",
+    },
+    {
+        name: "LinkedIn",
+        iconUrl: linkedin,
+        link: "https://www.linkedin.com/in/mohamed--ashraff",
+    },
 
     // ✅ Freelance platforms grouped together
-    { name: "Upwork", iconUrl: upwork, link: "https://www.upwork.com/freelancers/~0190a07e5b17474f9f?mp_source=share" },
-    { name: "Khamsat", iconUrl: khamsat_1, link: "https://khamsat.com/user/mohamed_ashraf124" },
-    { name: "Mostaql", iconUrl: mostaql, link: "https://mostaql.com/u/MohamedA_Data" },
+    {
+        name: "Upwork",
+        iconUrl: upwork,
+        link: "https://www.upwork.com/freelancers/~0190a07e5b17474f9f?mp_source=share",
+    },
+    {
+        name: "Khamsat",
+        iconUrl: khamsat_1,
+        link: "https://khamsat.com/user/mohamed_ashraf124",
+    },
+    {
+        name: "Mostaql",
+        iconUrl: mostaql,
+        link: "https://mostaql.com/u/MohamedA_Data",
+    },
 ];
 
 // ====================== Projects ======================
@@ -111,8 +131,8 @@ export const projects = [{
     {
         iconUrl: python,
         theme: "btn-back-blue",
-        name: "Uber Booking ML Model",
-        description: "A machine learning model to predict Uber booking demand using Python and data science libraries.",
-        link: "",
+        name: "Uber Ride Cancellation Prediction",
+        description: "A machine learning model to predict Uber ride cancellations using Python and real-world datasets.",
+        link: "https://www.linkedin.com/posts/mohamed--ashraff_nti-machinelearning-datascience-activity-7380348169714384896-6cJg?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAD7bhqYBpaGnSs-GSlnlvC6fWAFA25N-vkk",
     },
 ];
