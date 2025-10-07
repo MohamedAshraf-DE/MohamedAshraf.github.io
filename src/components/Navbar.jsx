@@ -3,10 +3,8 @@ import mylogo from "../assets/images/mylogo.png";
 
 const Navbar = () => {
     return ( <
-        header className = "flex items-center justify-between px-4 py-2 header" >
-
-        { /* Clickable Rounded Logo to LinkedIn */ } <
-        a href = "https://www.linkedin.com/in/mohamed-ashraf-de/"
+        header className = "flex items-center justify-between px-4 py-2 header" > { /* Clickable Rounded Logo to LinkedIn */ } <
+        a href = "https://www.linkedin.com/in/mohamed--ashraff/"
         target = "_blank"
         rel = "noopener noreferrer" >
         <
