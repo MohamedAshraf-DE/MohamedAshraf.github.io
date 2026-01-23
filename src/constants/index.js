@@ -89,7 +89,7 @@ export const socialLinks = [
     {
         name: "GitHub",
         iconUrl: github,
-        link: "https://github.com/MohamedAshraf-DE/MohamedAshraf.github.io",
+        link: "https://github.com/MohamedAshraf-DE",
     },
     {
         name: "LinkedIn",
