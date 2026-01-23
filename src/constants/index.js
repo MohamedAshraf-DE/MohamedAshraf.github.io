@@ -186,7 +186,7 @@ export const projects = [
         theme: "btn-back-pink",
         name: "Online Book Store Database",
         description: "A comprehensive database design and implementation for an online book store.",
-        link: "",
+        link: "https://github.com/MohamedAshraf-DE/Online-Book-store",
         category: "Database Design",
     },
 ];
