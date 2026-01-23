@@ -5,7 +5,15 @@ import starbucks from './starbucks.png';
 import tesla from './tesla.png';
 import logo from './logo.svg';
 import mylogo from './mylogo.png';
-import egyptFlag from './egypt.png'; // <-- updated with your file
+import egyptFlag from './egypt.png';
+import movie from './movie.jpg';
+import face from './face.jpeg';
+import house from './house.jpg';
+import car from './Car.jpg';
+import gammaImage from './image.jpg';
+import uber from './uber.png';
+import book from './book.jpg';
+import bank from './bank.jpg';
 
 export {
     hero,
@@ -15,5 +23,13 @@ export {
     tesla,
     logo,
     mylogo,
-    egyptFlag // <-- export it
+    egyptFlag,
+    movie,
+    face,
+    house,
+    car,
+    gammaImage,
+    uber,
+    book,
+    bank
 };

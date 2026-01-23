@@ -1,194 +1,187 @@
 import emailjs from "@emailjs/browser";
-import { Canvas } from "@react-three/fiber";
-import { Suspense, useRef, useState } from "react";
-
-import { Fox } from "../models";
+import { useRef, useState } from "react";
 import useAlert from "../hooks/useAlert";
-import { Alert, Loader } from "../components";
+import { Alert } from "../components";
+import { socialLinks } from "../constants";
 
 const Contact = () => {
-        const formRef = useRef();
-        const [form, setForm] = useState({ name: "", email: "", message: "" });
-        const { alert, showAlert, hideAlert } = useAlert();
-        const [loading, setLoading] = useState(false);
-        const [currentAnimation, setCurrentAnimation] = useState("idle");
+    const formRef = useRef();
+    const [form, setForm] = useState({ name: "", email: "", message: "" });
+    const { alert, showAlert, hideAlert } = useAlert();
+    const [loading, setLoading] = useState(false);
 
-        const handleChange = ({ target: { name, value } }) => {
-            setForm({...form, [name]: value });
-        };
+    const handleChange = ({ target: { name, value } }) => {
+        setForm({ ...form, [name]: value });
+    };
 
-        const handleFocus = () => setCurrentAnimation("walk");
-        const handleBlur = () => setCurrentAnimation("idle");
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setLoading(true);
 
-        const handleSubmit = (e) => {
-            e.preventDefault();
-            setLoading(true);
-            setCurrentAnimation("hit");
+        emailjs
+            .send(
+                import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
+                import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+                {
+                    from_name: form.name,
+                    from_email: form.email,
+                    message: form.message,
+                },
+                import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
+            )
+            .then(
+                () => {
+                    setLoading(false);
+                    showAlert({
+                        show: true,
+                        text: "✅ Thank you! Your message has been sent successfully.",
+                        type: "success",
+                    });
 
-            emailjs
-                .send(
-                    import.meta.env.VITE_APP_EMAILJS_SERVICE_ID, // service_arg24u5
-                    import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID, // template_2pupho7
-                    {
-                        from_name: form.name,
-                        from_email: form.email,
-                        message: form.message,
-                    },
-                    import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY // 7WityJryYNVqfwbqo
-                )
-                .then(
-                    () => {
-                        setLoading(false);
-                        showAlert({
-                            show: true,
-                            text: "✅ Thank you! Your message has been sent successfully.",
-                            type: "success",
-                        });
-
-                        // Reset form and animation after short delay
-                        setTimeout(() => {
-                            hideAlert(false);
-                            setCurrentAnimation("idle");
-                            setForm({ name: "", email: "", message: "" });
-                        }, 3000);
-                    },
-                    (error) => {
-                        console.error("EmailJS Error:", error);
-                        setLoading(false);
-                        setCurrentAnimation("idle");
-
-                        showAlert({
-                            show: true,
-                            text: "❌ Something went wrong. Please try again.",
-                            type: "danger",
-                        });
-                    }
-                );
-        };
-
-        return ( <
-            section className = "relative flex flex-col lg:flex-row max-container" > {
-                alert.show && < Alert {...alert }
-                />}
-
-                { /* ===== Left Form Section ===== */ } <
-                div className = "flex-1 min-w-[50%] flex flex-col" >
-                <
-                h1 className = "head-text" > Get in Touch < /h1>
-
-                <
-                form
-                ref = { formRef }
-                onSubmit = { handleSubmit }
-                className = "flex flex-col w-full gap-7 mt-14" >
-                <
-                label className = "font-semibold text-black-500" >
-                Name <
-                input
-                type = "text"
-                name = "name"
-                className = "input"
-                placeholder = "John"
-                required
-                value = { form.name }
-                onChange = { handleChange }
-                onFocus = { handleFocus }
-                onBlur = { handleBlur }
-                /> <
-                /label>
-
-                <
-                label className = "font-semibold text-black-500" >
-                Email <
-                input
-                type = "email"
-                name = "email"
-                className = "input"
-                placeholder = "john@gmail.com"
-                required
-                value = { form.email }
-                onChange = { handleChange }
-                onFocus = { handleFocus }
-                onBlur = { handleBlur }
-                /> <
-                /label>
-
-                <
-                label className = "font-semibold text-black-500" >
-                Your Message <
-                textarea
-                name = "message"
-                rows = "4"
-                className = "textarea"
-                placeholder = "Write your thoughts here..."
-                required
-                value = { form.message }
-                onChange = { handleChange }
-                onFocus = { handleFocus }
-                onBlur = { handleBlur }
-                /> <
-                /label>
-
-                <
-                button
-                type = "submit"
-                disabled = { loading }
-                className = "btn"
-                onFocus = { handleFocus }
-                onBlur = { handleBlur } >
-                { loading ? "Sending..." : "Submit" } <
-                /button> <
-                /form> <
-                /div>
-
-                { /* ===== Right 3D Fox Model Section ===== */ } <
-                div className = "lg:w-1/2 w-full lg:h-auto md:h-[550px] h-[350px]" >
-                <
-                Canvas
-                camera = {
-                    {
-                        position: [0, 0, 5],
-                        fov: 75,
-                        near: 0.1,
-                        far: 1000,
-                    }
-                } >
-                <
-                directionalLight position = {
-                    [0, 0, 1] }
-                intensity = { 2.5 }
-                /> <
-                ambientLight intensity = { 1 }
-                /> <
-                pointLight position = {
-                    [5, 10, 0] }
-                intensity = { 2 }
-                /> <
-                spotLight
-                position = {
-                    [10, 10, 10] }
-                angle = { 0.15 }
-                penumbra = { 1 }
-                intensity = { 2 }
-                />
-
-                <
-                Suspense fallback = { < Loader / > } >
-                <
-                Fox
-                currentAnimation = { currentAnimation }
-                position = {
-                    [0.5, 0.35, 0] }
-                rotation = {
-                    [12.629, -0.6, 0] }
-                scale = {
-                    [0.5, 0.5, 0.5] }
-                /> <
-                /Suspense> <
-                /Canvas> <
-                /div> <
-                /section>
+                    setTimeout(() => {
+                        hideAlert(false);
+                        setForm({ name: "", email: "", message: "" });
+                    }, 3000);
+                },
+                (error) => {
+                    setLoading(false);
+                    showAlert({
+                        show: true,
+                        text: "❌ Something went wrong. Please try again.",
+                        type: "danger",
+                    });
+                }
             );
-        };
+    };
 
-        export default Contact;
+    return (
+        <section className='relative flex justify-center items-center min-h-[100vh] p-4 lg:p-10 animate-fade-in-up'>
+            {alert.show && <Alert {...alert} />}
+
+            <div className='flex flex-col lg:flex-row w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl'>
+
+                {/* Left Panel: Info & Contact Details */}
+                <div className='lg:w-2/5 w-full bg-gradient-to-br from-blue-500 to-blue-700 p-10 flex flex-col justify-between text-white'>
+                    <div>
+                        <h2 className='text-3xl font-bold mb-4 font-poppins'>Get in touch</h2>
+                        <p className='text-blue-100 mb-8 leading-relaxed'>
+                            Whether you have a project in mind or just want to discuss the latest tech, I'm here to chat.
+                        </p>
+
+                        <div className='flex flex-col gap-6'>
+                            {/* Address */}
+                            <div className='flex items-start gap-4'>
+                                <span className='text-2xl'>📍</span>
+                                <div>
+                                    <h4 className='font-semibold text-lg'>Visit me</h4>
+                                    <p className='text-blue-100 text-sm'>Alexandria, Egypt</p>
+                                </div>
+                            </div>
+
+                            {/* Email */}
+                            <div className='flex items-start gap-4'>
+                                <span className='text-2xl'>✉️</span>
+                                <div>
+                                    <h4 className='font-semibold text-lg'>Chat to me</h4>
+                                    <p className='text-blue-100 text-sm break-all'>mohammed.ashraf.m.w@gmail.com</p>
+                                </div>
+                            </div>
+
+                            {/* Phone */}
+                            <div className='flex items-start gap-4'>
+                                <span className='text-2xl'>📞</span>
+                                <div>
+                                    <h4 className='font-semibold text-lg'>Call me</h4>
+                                    <p className='text-blue-100 text-sm'>+20 127 571 8500</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Social Media Icons */}
+                    <div className='mt-12'>
+                        <h4 className='font-semibold text-lg mb-4'>Social media</h4>
+                        <div className='flex flex-wrap gap-4'>
+                            {socialLinks.map((link) => (
+                                <a
+                                    key={link.name}
+                                    href={link.link}
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    className='transition-transform hover:scale-110'
+                                    title={link.name}
+                                >
+                                    <img
+                                        src={link.iconUrl}
+                                        alt={link.name}
+                                        // Removed filter invert and background classes to match the requested "footer style" (original colors)
+                                        className='w-9 h-9 object-contain'
+                                    />
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Right Panel: Form */}
+                <div className='lg:w-3/5 w-full p-10 bg-white'>
+                    <form
+                        ref={formRef}
+                        onSubmit={handleSubmit}
+                        className='flex flex-col gap-6'
+                    >
+                        <div className='flex flex-col gap-2'>
+                            <label className='font-semibold text-slate-600'>Name</label>
+                            <input
+                                type='text'
+                                name='name'
+                                className='input bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg p-3 outline-none transition-all'
+                                placeholder='John Doe'
+                                required
+                                value={form.name}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className='flex flex-col gap-2'>
+                            <label className='font-semibold text-slate-600'>Email</label>
+                            <input
+                                type='email'
+                                name='email'
+                                className='input bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg p-3 outline-none transition-all'
+                                placeholder='john@gmail.com'
+                                required
+                                value={form.email}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <div className='flex flex-col gap-2'>
+                            <label className='font-semibold text-slate-600'>Message</label>
+                            <textarea
+                                name='message'
+                                rows='4'
+                                className='textarea bg-slate-50 border border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-lg p-3 outline-none transition-all resize-none'
+                                placeholder='Tell me about your project...'
+                                required
+                                value={form.message}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <button
+                            type='submit'
+                            disabled={loading}
+                            className='btn w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl mt-4'
+                        >
+                            {loading ? "Sending..." : "Send Message"}
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+    );
+};
+
+export default Contact;
