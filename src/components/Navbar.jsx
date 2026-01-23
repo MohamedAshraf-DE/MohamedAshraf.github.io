@@ -3,7 +3,7 @@ import mylogo from "../assets/images/mylogo.png";
 
 const Navbar = () => {
     return (
-        <header className="header flex items-center justify-between px-4 py-2 absolute top-0 w-full z-10 bg-transparent">
+        <header className="header flex items-center justify-between px-2 sm:px-4 py-2 absolute top-0 w-full z-10 bg-transparent">
             {/* Clickable Rounded Logo to LinkedIn */}
             <a
                 href="https://www.linkedin.com/in/mohamed--ashraff/"
@@ -13,12 +13,12 @@ const Navbar = () => {
                 <img
                     src={mylogo}
                     alt="Mohamed Ashraf Logo"
-                    className="object-cover w-20 h-20 transition-transform duration-200 rounded-full hover:scale-105 hover:shadow-xl"
+                    className="object-cover w-14 h-14 sm:w-20 sm:h-20 transition-transform duration-200 rounded-full hover:scale-105 hover:shadow-xl"
                 />
             </a>
 
             {/* Navigation Links */}
-            <nav className="flex text-lg font-medium gap-7">
+            <nav className="flex text-sm sm:text-lg font-medium gap-3 sm:gap-7">
                 <NavLink
                     to="/about"
                     className={({ isActive }) =>

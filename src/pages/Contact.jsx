@@ -55,16 +55,16 @@ const Contact = () => {
     };
 
     return (
-        <section className='relative flex justify-center items-center min-h-[100vh] p-4 lg:p-10 animate-fade-in-up'>
+        <section className='relative flex justify-center items-center min-h-[100vh] p-4 lg:p-10 animate-fade-in-up pt-24 sm:pt-28'>
             {alert.show && <Alert {...alert} />}
 
             <div className='flex flex-col lg:flex-row w-full max-w-6xl bg-white rounded-3xl overflow-hidden shadow-2xl'>
 
                 {/* Left Panel: Info & Contact Details */}
-                <div className='lg:w-2/5 w-full bg-gradient-to-br from-blue-500 to-blue-700 p-10 flex flex-col justify-between text-white'>
+                <div className='lg:w-2/5 w-full bg-gradient-to-br from-blue-500 to-blue-700 p-6 sm:p-10 flex flex-col justify-between text-white'>
                     <div>
-                        <h2 className='text-3xl font-bold mb-4 font-poppins'>Get in touch</h2>
-                        <p className='text-blue-100 mb-8 leading-relaxed'>
+                        <h2 className='text-2xl sm:text-3xl font-bold mb-4 font-poppins'>Get in touch</h2>
+                        <p className='text-blue-100 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base'>
                             Whether you have a project in mind or just want to discuss the latest tech, I'm here to chat.
                         </p>
 
@@ -124,7 +124,7 @@ const Contact = () => {
                 </div>
 
                 {/* Right Panel: Form */}
-                <div className='lg:w-3/5 w-full p-10 bg-white'>
+                <div className='lg:w-3/5 w-full p-6 sm:p-10 bg-white'>
                     <form
                         ref={formRef}
                         onSubmit={handleSubmit}
