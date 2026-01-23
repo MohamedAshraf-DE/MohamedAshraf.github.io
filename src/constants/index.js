@@ -177,7 +177,7 @@ export const projects = [
         theme: "btn-back-black",
         name: "Movie Revenue Prediction",
         description: "A system to predict movie revenue based on various features.",
-        link: "", // Link to be provided
+        link: "https://movie-revenue-prediction-jg37k7hrowdn7twnkatw3d.streamlit.app/",
         category: "Machine Learning",
     },
     {
