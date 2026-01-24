@@ -14,6 +14,8 @@ import gammaImage from './image.jpg';
 import uber from './uber.png';
 import book from './book.jpg';
 import bank from './bank.jpg';
+import nvidia from './nvidia.png';
+import andrew from './andrew.png';
 
 export {
     hero,
@@ -31,5 +33,7 @@ export {
     gammaImage,
     uber,
     book,
-    bank
+    bank,
+    nvidia,
+    andrew
 };
