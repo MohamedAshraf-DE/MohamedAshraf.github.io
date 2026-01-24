@@ -1,6 +1,7 @@
 import { CTA } from "../components";
 import nvidia from "../assets/images/nvidia.png";
 import andrew from "../assets/images/andrew.png";
+import A2 from "../assets/images/A2.png";
 
 const Certificates = () => {
     const certificates = [
@@ -21,6 +22,15 @@ const Certificates = () => {
             description: "Successfully completed Andrew Ng's renowned Machine Learning course covering supervised learning, unsupervised learning, and best practices in machine learning. Gained hands-on experience with algorithms including linear regression, logistic regression, neural networks, and more.",
             date: "2024",
             skills: ["Machine Learning", "Python", "Algorithms", "Data Analysis"]
+        },
+        {
+            id: 3,
+            name: "Unsupervised Learning, Recommenders, Reinforcement Learning",
+            issuer: "DeepLearning.AI & Stanford University - Coursera",
+            image: A2,
+            description: "Advanced course covering unsupervised learning techniques including clustering and anomaly detection, building recommender systems with collaborative filtering and content-based filtering, and fundamentals of reinforcement learning.",
+            date: "2026",
+            skills: ["Unsupervised Learning", "Recommender Systems", "Reinforcement Learning", "Anomaly Detection"]
         }
     ];
 

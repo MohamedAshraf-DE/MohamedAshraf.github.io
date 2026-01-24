@@ -16,6 +16,7 @@ import book from './book.jpg';
 import bank from './bank.jpg';
 import nvidia from './nvidia.png';
 import andrew from './andrew.png';
+import A2 from './A2.png';
 
 export {
     hero,
@@ -35,5 +36,6 @@ export {
     book,
     bank,
     nvidia,
-    andrew
+    andrew,
+    A2
 };
