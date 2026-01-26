@@ -2,6 +2,7 @@ import { CTA } from "../components";
 import nvidia from "../assets/images/nvidia.png";
 import andrew from "../assets/images/andrew.png";
 import A2 from "../assets/images/A2.png";
+import depi from "../assets/images/depi.png";
 
 const Certificates = () => {
     const certificates = [
@@ -31,6 +32,15 @@ const Certificates = () => {
             description: "Advanced course covering unsupervised learning techniques including clustering and anomaly detection, building recommender systems with collaborative filtering and content-based filtering, and fundamentals of reinforcement learning.",
             date: "2026",
             skills: ["Unsupervised Learning", "Recommender Systems", "Reinforcement Learning", "Anomaly Detection"]
+        },
+        {
+            id: 4,
+            name: "Data Analytics - Microsoft Power BI Specialist",
+            issuer: "Digital Egypt Pioneers Program (DEPI) - MCIT",
+            image: depi,
+            description: "Completed an intensive 6-month specialized program in Data Analytics, focusing on Microsoft Power BI. Gained expertise in data modeling, visualization, and business intelligence to drive data-driven decision making.",
+            date: "2025",
+            skills: ["Power BI", "Data Analytics", "Data Visualization", "Business Intelligence", "Query Editor"]
         }
     ];
 

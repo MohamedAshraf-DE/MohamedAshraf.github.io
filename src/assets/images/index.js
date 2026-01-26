@@ -17,6 +17,7 @@ import bank from './bank.jpg';
 import nvidia from './nvidia.png';
 import andrew from './andrew.png';
 import A2 from './A2.png';
+import depi from './depi.png';
 
 export {
     hero,
@@ -37,5 +38,6 @@ export {
     bank,
     nvidia,
     andrew,
-    A2
+    A2,
+    depi
 };
