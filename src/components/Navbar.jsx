@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import mylogo from "../assets/images/mylogo.png";
+import cv from "../assets/images/Mohamed_Ashraf_CV.pdf";
 
 const Navbar = () => {
     return (
@@ -54,6 +55,15 @@ const Navbar = () => {
                 >
                     Contact
                 </NavLink>
+
+                {/* CV Download Link (Matches other nav links) */}
+                <a
+                    href={cv}
+                    download="Mohamed_Ashraf_CV.pdf"
+                    className="text-black transition-colors hover:text-blue-600"
+                >
+                    Download CV
+                </a>
             </nav>
         </header>
     );
