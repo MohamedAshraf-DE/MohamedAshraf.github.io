@@ -107,14 +107,14 @@ const LoginCharacters = ({ formState = 'idle', mousePos = { x: 0, y: 0 } }) => {
         }
 
         // 2. CAMERA ZOOM & SCALE
-        // Mobile: Heroic zoom and larger scale
-        const baseZoom = isMobile ? 9 : 8;
-        const typingZoom = isMobile ? 7 : 5.5;
+        // Mobile: Zoom out further (larger z) and scale down model group
+        const baseZoom = isMobile ? 11 : 8;
+        const typingZoom = isMobile ? 9 : 5.5;
         const targetZoom = isTyping ? typingZoom : baseZoom;
         state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetZoom, 0.05);
 
         // Adjust group scale for mobile
-        const targetGroupScale = isMobile ? 0.85 : 0.9;
+        const targetGroupScale = isMobile ? 0.65 : 0.9;
         groupRef.current.scale.lerp(new THREE.Vector3(targetGroupScale, targetGroupScale, targetGroupScale), 0.1);
 
         // 3. SCATTER LOGIC

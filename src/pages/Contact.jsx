@@ -158,7 +158,7 @@ const Contact = () => {
                 <div className='lg:w-2/3 w-full flex flex-col pt-4 lg:pt-10'>
 
                     {/* Main Content Row */}
-                    <div className="flex flex-col-reverse lg:flex-row gap-10 h-full">
+                    <div className="flex flex-col lg:flex-row gap-10 h-full">
 
                         {/* Form Section - Wider and cleaner */}
                         <div className='flex-1 flex flex-col justify-center'>
