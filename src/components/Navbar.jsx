@@ -19,8 +19,8 @@ const Navbar = () => {
                 />
             </a>
 
-            {/* Navigation Links */}
-            <nav className="flex text-sm sm:text-lg font-medium gap-3 sm:gap-7">
+            {/* Navigation Links - Scrollable on mobile */}
+            <nav className="flex text-sm sm:text-lg font-medium gap-4 sm:gap-7 overflow-x-auto whitespace-nowrap ml-4 no-scrollbar items-center">
                 <NavLink
                     to="/about"
                     className={({ isActive }) =>
@@ -45,7 +45,7 @@ const Navbar = () => {
                         isActive ? "text-blue-600" : "text-black"
                     }
                 >
-                    Certificates
+                    Certs
                 </NavLink>
 
                 <NavLink
@@ -57,13 +57,13 @@ const Navbar = () => {
                     Contact
                 </NavLink>
 
-                {/* CV Download Link (Matches other nav links) */}
+                {/* CV Download Link */}
                 <a
                     href={cv}
                     download="Mohamed_Ashraf_CV.pdf"
-                    className="text-black transition-colors hover:text-blue-600"
+                    className="text-black transition-colors hover:text-blue-600 pr-2"
                 >
-                    Download CV
+                    CV
                 </a>
             </nav>
         </header>
