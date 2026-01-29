@@ -1,10 +1,11 @@
 export { Sky }
-from "./Sky";
+    from "./Sky";
 export { Bird }
-from './Bird'
+    from './Bird'
 export { Plane }
-from "./Plane";
+    from "./Plane";
 export { Island }
-from "./Island";
+    from "./Island";
 export { Fox }
-from "./Fox"
+    from "./Fox"
+export { default as LoginCharacters } from "./LoginCharacters";
