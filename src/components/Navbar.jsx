@@ -10,6 +10,7 @@ const Navbar = () => {
                 href="https://www.linkedin.com/in/mohamed--ashraff/"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="flex-shrink-0"
             >
                 <img
                     src={mylogo}

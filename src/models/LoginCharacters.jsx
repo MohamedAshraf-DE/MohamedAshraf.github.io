@@ -114,7 +114,7 @@ const LoginCharacters = ({ formState = 'idle', mousePos = { x: 0, y: 0 } }) => {
         state.camera.position.z = THREE.MathUtils.lerp(state.camera.position.z, targetZoom, 0.05);
 
         // Adjust group scale for mobile
-        const targetGroupScale = isMobile ? 0.55 : 0.9;
+        const targetGroupScale = isMobile ? 0.65 : 0.9;
         groupRef.current.scale.lerp(new THREE.Vector3(targetGroupScale, targetGroupScale, targetGroupScale), 0.1);
 
         // 3. SCATTER LOGIC

@@ -90,10 +90,10 @@ const Contact = () => {
         <section className='relative flex flex-col justify-center items-center min-h-screen animate-fade-in-up bg-white pt-24 sm:pt-28 pb-12' onMouseMove={handleMouseMove}>
             {alert.show && <Alert {...alert} />}
 
-            <div className='w-full max-w-[1400px] bg-white mx-auto flex flex-col lg:flex-row gap-8 lg:gap-16 px-4 sm:px-8'>
+            <div className='w-full max-w-[1400px] bg-white mx-auto flex flex-col lg:flex-row gap-6 lg:gap-16 px-4 sm:px-8'>
 
                 {/* Left Panel: Contact Info (Gradient Blue) - Floating Card Style */}
-                <div className='lg:w-1/3 w-full bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-8 sm:p-12 text-white shadow-2xl flex flex-col justify-between min-h-[500px]'>
+                <div className='lg:w-1/3 w-full bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-6 sm:p-12 text-white shadow-2xl flex flex-col justify-between lg:min-h-[500px]'>
                     <div>
                         <h2 className='text-3xl sm:text-4xl font-bold mb-6 font-poppins'>Get in touch</h2>
                         <p className='text-blue-100 mb-8 sm:mb-12 leading-relaxed text-lg'>
