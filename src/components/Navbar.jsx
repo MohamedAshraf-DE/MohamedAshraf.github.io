@@ -4,7 +4,7 @@ import cv from "../assets/images/Mohamed_Ashraf_CV.pdf";
 
 const Navbar = () => {
     return (
-        <header className="header flex items-center justify-between px-2 sm:px-4 py-2 absolute top-0 w-full z-10 bg-transparent">
+        <header className="header flex items-center justify-between pl-0 pr-2 sm:px-4 py-2 absolute top-0 w-full z-10 bg-transparent">
             {/* Clickable Rounded Logo to LinkedIn */}
             <a
                 href="https://www.linkedin.com/in/mohamed--ashraff/"
