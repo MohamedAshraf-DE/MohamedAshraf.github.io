@@ -10,7 +10,7 @@ const Navbar = () => {
                 href="https://www.linkedin.com/in/mohamed--ashraff/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-shrink-0"
+                className="flex-shrink-0 -ml-2 sm:ml-0"
             >
                 <img
                     src={mylogo}
@@ -19,8 +19,8 @@ const Navbar = () => {
                 />
             </a>
 
-            {/* Navigation Links - Scrollable on mobile */}
-            <nav className="flex text-sm sm:text-lg font-medium gap-4 sm:gap-7 overflow-x-auto whitespace-nowrap ml-4 no-scrollbar items-center">
+            {/* Navigation Links */}
+            <nav className="flex text-sm sm:text-lg font-medium gap-3 sm:gap-7">
                 <NavLink
                     to="/about"
                     className={({ isActive }) =>
@@ -45,7 +45,7 @@ const Navbar = () => {
                         isActive ? "text-blue-600" : "text-black"
                     }
                 >
-                    Certs
+                    Certificates
                 </NavLink>
 
                 <NavLink
@@ -61,9 +61,9 @@ const Navbar = () => {
                 <a
                     href={cv}
                     download="Mohamed_Ashraf_CV.pdf"
-                    className="text-black transition-colors hover:text-blue-600 pr-2"
+                    className="text-black transition-colors hover:text-blue-600"
                 >
-                    CV
+                    Download CV
                 </a>
             </nav>
         </header>
