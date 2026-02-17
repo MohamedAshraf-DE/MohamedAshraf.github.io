@@ -3,6 +3,7 @@ import nvidia from "../assets/images/nvidia.png";
 import andrew from "../assets/images/andrew.png";
 import A2 from "../assets/images/A2.png";
 import depi from "../assets/images/depi.png";
+import mlCertificate from "../assets/images/creativa.png";
 
 const Certificates = () => {
     const certificates = [
@@ -41,6 +42,16 @@ const Certificates = () => {
             description: "Completed an intensive 6-month specialized program in Data Analytics, focusing on Microsoft Power BI. Gained expertise in data modeling, visualization, and business intelligence to drive data-driven decision making.",
             date: "2025",
             skills: ["Power BI", "Data Analytics", "Data Visualization", "Business Intelligence", "Query Editor"]
+        }
+        ,
+        {
+            id: 5,
+            name: "Machine Learning for Data Analysis",
+            issuer: "Digital Egypt Youth Program / NTI",
+            image: mlCertificate,
+            description: "Completed the Machine Learning for Data Analysis program (Technical 90 hrs + Freelancing 30 hrs). Focused on practical ML workflows, model evaluation, and data-driven solutions.",
+            date: "17/08/2025 - 10/10/2025",
+            skills: ["Machine Learning", "Data Analysis", "Model Evaluation", "Python"]
         }
     ];
 
