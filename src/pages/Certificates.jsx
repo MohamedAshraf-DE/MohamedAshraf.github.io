@@ -57,11 +57,11 @@ const Certificates = () => {
 
     return (
         <section className='max-container animate-fade-in-up'>
-            <h1 className='head-text'>
+            <h1 className='head-text dark:text-white'>
                 My <span className='blue-gradient_text drop-shadow font-semibold'>Certificates</span>
             </h1>
 
-            <p className='text-slate-500 mt-2 leading-relaxed'>
+            <p className='text-slate-500 dark:text-slate-300 mt-2 leading-relaxed'>
                 Professional certifications and achievements that showcase my commitment to continuous learning
                 and expertise in data engineering, machine learning, and artificial intelligence.
             </p>
@@ -69,12 +69,12 @@ const Certificates = () => {
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 my-10'>
                 {certificates.map((certificate, index) => (
                     <div
-                        className='certificate-card flex flex-col group animate-fade-in-up bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300'
+                        className='certificate-card flex flex-col group animate-fade-in-up bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-transparent dark:border-slate-700 overflow-hidden hover:shadow-2xl transition-all duration-300'
                         key={certificate.id}
                         style={{ animationDelay: `${index * 150}ms` }}
                     >
                         {/* Certificate Image */}
-                        <div className='relative h-64 overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100'>
+                        <div className='relative h-64 overflow-hidden bg-gradient-to-br from-blue-50 to-slate-100 dark:from-slate-700 dark:to-slate-800'>
                             <img
                                 src={certificate.image}
                                 alt={certificate.name}
@@ -85,10 +85,10 @@ const Certificates = () => {
                         {/* Certificate Details */}
                         <div className='p-6 flex flex-col flex-1'>
                             <div className='mb-4'>
-                                <h3 className='text-2xl font-bold font-poppins text-slate-800 mb-2'>
+                                <h3 className='text-2xl font-bold font-poppins text-slate-800 dark:text-white mb-2'>
                                     {certificate.name}
                                 </h3>
-                                <p className='text-blue-600 font-semibold text-sm mb-1'>
+                                <p className='text-blue-600 dark:text-blue-400 font-semibold text-sm mb-1'>
                                     {certificate.issuer}
                                 </p>
                                 <p className='text-slate-400 text-sm'>
@@ -96,7 +96,7 @@ const Certificates = () => {
                                 </p>
                             </div>
 
-                            <p className='text-slate-600 text-sm leading-relaxed mb-6 flex-1'>
+                            <p className='text-slate-600 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1'>
                                 {certificate.description}
                             </p>
 
@@ -105,7 +105,7 @@ const Certificates = () => {
                                 {certificate.skills.map((skill, idx) => (
                                     <span
                                         key={idx}
-                                        className='px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-200'
+                                        className='px-3 py-1 bg-blue-50 text-blue-700 border-blue-200 dark:bg-slate-700 dark:text-blue-300 dark:border-slate-600 text-xs font-semibold rounded-full border'
                                     >
                                         {skill}
                                     </span>
@@ -116,7 +116,7 @@ const Certificates = () => {
                 ))}
             </div>
 
-            <hr className='border-slate-200' />
+            <hr className='border-slate-200 dark:border-slate-700' />
 
             <CTA />
         </section>

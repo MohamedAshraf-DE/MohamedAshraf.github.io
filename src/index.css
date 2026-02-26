@@ -143,7 +143,7 @@ body:has(.card[data-color="green"]:hover) {
   }
 
   .cta-text {
-    @apply text-black-500 font-extrabold flex-1 text-3xl;
+    @apply text-black-500 dark:text-slate-200 font-extrabold flex-1 text-3xl;
   }
 
   @media (max-width: 767px) {
@@ -380,4 +380,63 @@ body:has(.card[data-color="green"]:hover) {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #0072ff 0%, #00c6ff 100%);
+}
+
+/* Custom Scrollbar for the Services list */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(34, 211, 238, 0.4);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(34, 211, 238, 0.6);
+}
+
+.film-burn {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at 20% 55%, rgba(255, 140, 0, 0.92) 0%, rgba(255, 140, 0, 0.0) 56%),
+    radial-gradient(circle at 65% 45%, rgba(255, 0, 0, 0.78) 0%, rgba(255, 0, 0, 0.0) 62%),
+    radial-gradient(circle at 85% 60%, rgba(0, 170, 255, 0.28) 0%, rgba(0, 170, 255, 0.0) 58%),
+    linear-gradient(90deg, rgba(255, 120, 0, 0.35), rgba(255, 0, 0, 0.15));
+
+  filter: blur(10px) saturate(150%) contrast(115%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translateX(-25%);
+  animation: burnSwipe var(--burn-duration, 650ms) ease-out forwards;
+}
+
+@keyframes burnSwipe {
+  0% {
+    opacity: 0;
+    transform: translateX(-25%) scale(1.05);
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateX(15%) scale(1.05);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(60%) scale(1.05);
+  }
 }

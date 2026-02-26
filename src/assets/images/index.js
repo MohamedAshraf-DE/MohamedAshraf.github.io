@@ -18,7 +18,14 @@ import nvidia from './nvidia.png';
 import andrew from './andrew.png';
 import A2 from './A2.png';
 import depi from './depi.png';
-
+import servicesAnalytics from './services-analytics.png';
+import servicesEngineering from './services-engineering.png';
+import servicesMl from './services-ml.png';
+import servicesBackend from './services-backend.png';
+import servicesFrontend from './services-frontend.png';
+import servicesEmbedded from './services-embedded.png';
+import servicesSql from './services-sql.png';
+import crescentMoon from './crescent-moon.svg';
 export {
     hero,
     meta,
@@ -39,5 +46,13 @@ export {
     nvidia,
     andrew,
     A2,
-    depi
+    depi,
+    servicesAnalytics,
+    servicesEngineering,
+    servicesMl,
+    servicesBackend,
+    servicesFrontend,
+    servicesEmbedded,
+    servicesSql,
+    crescentMoon
 };

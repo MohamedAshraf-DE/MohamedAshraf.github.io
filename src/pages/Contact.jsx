@@ -87,10 +87,10 @@ const Contact = () => {
     };
 
     return (
-        <section className='relative flex flex-col justify-center items-center min-h-screen animate-fade-in-up bg-white pt-24 sm:pt-28 pb-12' onMouseMove={handleMouseMove}>
+        <section className='relative flex flex-col justify-center items-center min-h-screen animate-fade-in-up pt-24 sm:pt-28 pb-12' onMouseMove={handleMouseMove}>
             {alert.show && <Alert {...alert} />}
 
-            <div className='w-full max-w-[1400px] bg-white mx-auto flex flex-col lg:flex-row gap-6 lg:gap-16 px-4 sm:px-8'>
+            <div className='w-full max-w-[1400px] border border-transparent dark:border-white/10 dark:bg-slate-800/50 rounded-2xl mx-auto flex flex-col lg:flex-row gap-6 lg:gap-16 px-4 py-6 sm:px-8'>
 
                 {/* Left Panel: Contact Info (Gradient Blue) - Floating Card Style */}
                 <div className='lg:w-1/3 w-full bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-6 sm:p-12 text-white shadow-2xl flex flex-col justify-between lg:min-h-[500px]'>
@@ -168,11 +168,11 @@ const Contact = () => {
                                 className='flex flex-col gap-8'
                             >
                                 <div className='flex flex-col gap-2'>
-                                    <label className='font-bold text-gray-700 text-lg'>Name</label>
+                                    <label className='font-bold text-gray-700 dark:text-slate-300 text-lg'>Name</label>
                                     <input
                                         type='text'
                                         name='name'
-                                        className='input bg-gray-50 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-4 text-lg outline-none transition-all focus:bg-white'
+                                        className='input bg-gray-50 dark:bg-slate-700/50 border-b-2 border-gray-200 dark:border-slate-600 focus:border-blue-600 rounded-none px-4 py-4 text-lg outline-none transition-all focus:bg-white dark:focus:bg-slate-700 dark:text-white'
                                         placeholder='What’s your name?'
                                         required
                                         value={form.name}
@@ -183,11 +183,11 @@ const Contact = () => {
                                 </div>
 
                                 <div className='flex flex-col gap-2'>
-                                    <label className='font-bold text-gray-700 text-lg'>Email</label>
+                                    <label className='font-bold text-gray-700 dark:text-slate-300 text-lg'>Email</label>
                                     <input
                                         type='email'
                                         name='email'
-                                        className='input bg-gray-50 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-4 text-lg outline-none transition-all focus:bg-white'
+                                        className='input bg-gray-50 dark:bg-slate-700/50 border-b-2 border-gray-200 dark:border-slate-600 focus:border-blue-600 rounded-none px-4 py-4 text-lg outline-none transition-all focus:bg-white dark:focus:bg-slate-700 dark:text-white'
                                         placeholder='What’s your email?'
                                         required
                                         value={form.email}
@@ -198,11 +198,11 @@ const Contact = () => {
                                 </div>
 
                                 <div className='flex flex-col gap-2'>
-                                    <label className='font-bold text-gray-700 text-lg'>Message</label>
+                                    <label className='font-bold text-gray-700 dark:text-slate-300 text-lg'>Message</label>
                                     <textarea
                                         name='message'
                                         rows='4'
-                                        className='textarea bg-gray-50 border-b-2 border-gray-200 focus:border-blue-600 rounded-none px-4 py-4 text-lg outline-none transition-all resize-none focus:bg-white'
+                                        className='textarea bg-gray-50 dark:bg-slate-700/50 border-b-2 border-gray-200 dark:border-slate-600 focus:border-blue-600 rounded-none px-4 py-4 text-lg outline-none transition-all resize-none focus:bg-white dark:focus:bg-slate-700 dark:text-white'
                                         placeholder='Write your message...'
                                         required
                                         value={form.message}

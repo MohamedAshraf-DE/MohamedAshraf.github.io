@@ -1,13 +1,8 @@
 import Home from "./Home";
-import About from './About'
+import About from "./About";
 import Projects from "./Projects.jsx";
-import Contact from "./Contact";
 import Certificates from "./Certificates";
+import Contact from "./Contact";
+import Services from "./Services";
 
-export {
-    Home,
-    About,
-    Projects,
-    Contact,
-    Certificates
-}
+export { Home, About, Projects, Certificates, Services, Contact };

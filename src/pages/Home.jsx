@@ -1,12 +1,34 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState, useContext } from "react";
+import { Stars, useTexture } from "@react-three/drei";
+import * as THREE from "three";
 
 import sakura from "../assets/sakura.mp3";
+import { ThemeContext } from "../context/ThemeContext";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
+import { crescentMoon } from "../assets/images";
 import { Bird, Island, Plane, Sky } from "../models";
 
+const NightSkyMoon = () => {
+    const moonTexture = useTexture(crescentMoon);
+    return (
+        <mesh position={[-65, 20, -60]}>
+            <planeGeometry args={[16, 16]} />
+            <meshBasicMaterial
+                map={moonTexture}
+                transparent={true}
+                side={THREE.DoubleSide}
+                color="#e0f0ff"
+            />
+        </mesh>
+    );
+};
+
 const Home = () => {
+    const { theme } = useContext(ThemeContext);
+    const isDark = theme === "dark";
+
     const audioRef = useRef(new Audio(sakura));
     audioRef.current.volume = 0.4;
     audioRef.current.loop = true;
@@ -67,23 +89,43 @@ const Home = () => {
                 camera={{ near: 0.1, far: 1000 }}
             >
                 <Suspense fallback={<Loader />}>
-                    <directionalLight position={[1, 1, 1]} intensity={2} />
-                    <ambientLight intensity={0.5} />
-                    <pointLight position={[10, 5, 10]} intensity={2} />
+                    {/* Directional light represents the sun. At night, it becomes ambient moonlight. */}
+                    <directionalLight
+                        position={isDark ? [-65, 20, -60] : [1, 1, 1]}
+                        intensity={isDark ? 1.5 : 2}
+                        color={isDark ? '#e0f0ff' : '#ffffff'}
+                    />
+                    {/* Ambient light is the general environmental light. */}
+                    <ambientLight intensity={isDark ? 0.4 : 0.5} />
+                    {/* Point light helps illuminate the scene nicely. */}
+                    <pointLight
+                        position={[10, 5, 10]}
+                        intensity={isDark ? 1.2 : 2}
+                        color={isDark ? '#a2d2ff' : '#ffffff'}
+                    />
                     <spotLight
                         position={[0, 50, 10]}
                         angle={0.15}
                         penumbra={1}
-                        intensity={2}
+                        intensity={isDark ? 0.7 : 2}
+                        color={isDark ? '#a2d2ff' : '#ffffff'}
                     />
                     <hemisphereLight
-                        skyColor='#b1e1ff'
-                        groundColor='#000000'
-                        intensity={1}
+                        skyColor={isDark ? '#0a1c4a' : '#b1e1ff'}
+                        groundColor={isDark ? '#1a2035' : '#000000'}
+                        intensity={isDark ? 0.4 : 1}
                     />
 
                     <Bird />
-                    <Sky isRotating={isRotating} />
+                    <Sky isRotating={isRotating} theme={theme} />
+
+                    {/* Night Sky Features */}
+                    {isDark && (
+                        <group>
+                            <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+                            <NightSkyMoon />
+                        </group>
+                    )}
                     <Island
                         isRotating={isRotating}
                         setIsRotating={setIsRotating}

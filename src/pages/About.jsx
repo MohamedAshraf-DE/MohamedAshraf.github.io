@@ -2,16 +2,21 @@ import {
     VerticalTimeline,
     VerticalTimelineElement,
 } from "react-vertical-timeline-component";
+import { useContext } from "react";
 
 import { CTA } from "../components";
 import { experiences, skills } from "../constants";
+import { ThemeContext } from "../context/ThemeContext";
 
 import "react-vertical-timeline-component/style.min.css";
 
 const About = () => {
+    const { theme } = useContext(ThemeContext);
+    const isDark = theme === "dark";
+
     return (
         <section className='max-container animate-fade-in-up'>
-            <h1 className='head-text'>
+            <h1 className='head-text dark:text-white'>
                 Hello, I'm{" "}
                 <span className='font-semibold blue-gradient_text drop-shadow'>
                     Mohamed Ashraf
@@ -19,7 +24,7 @@ const About = () => {
                 👋
             </h1>
 
-            <div className='flex flex-col gap-3 mt-5 text-slate-500'>
+            <div className='flex flex-col gap-3 mt-5 text-slate-500 dark:text-slate-300'>
                 <p>
                     Computer and Communication Engineer based in Egypt, specializing in building dashboards and interactive projects, and aspiring to become a Data Engineer or work in a data-related field.
                 </p>
@@ -37,7 +42,7 @@ const About = () => {
                             style={{ animationDelay: `${index * 100}ms` }} // Staggered Animation
                         >
                             <div className='btn-back rounded-xl' />
-                            <div className='flex items-center justify-center btn-front rounded-xl'>
+                            <div className='flex items-center justify-center btn-front rounded-xl dark:bg-slate-100'>
                                 <img
                                     src={skill.imageUrl}
                                     alt={skill.name}
@@ -52,7 +57,7 @@ const About = () => {
             <div className='py-16'>
                 {/* Gradient applied to subhead */}
                 <h3 className='subhead-text blue-gradient_text drop-shadow font-semibold'>Work Experience.</h3>
-                <div className='flex flex-col gap-3 mt-5 text-slate-500'>
+                <div className='flex flex-col gap-3 mt-5 text-slate-500 dark:text-slate-300'>
                     <p>
                         I've worked with all sorts of companies, leveling up my skills and
                         teaming up with smart people. Here's the rundown:
@@ -80,14 +85,19 @@ const About = () => {
                                     borderStyle: "solid",
                                     borderBottomColor: experience.iconBg,
                                     boxShadow: "none",
+                                    background: isDark ? '#1e293b' : '#fff', // slate-800
+                                    color: isDark ? '#fff' : '#000',
+                                }}
+                                contentArrowStyle={{
+                                    borderRight: `7px solid ${isDark ? '#1e293b' : '#fff'}`
                                 }}
                             >
                                 <div>
-                                    <h3 className='text-xl font-semibold text-black font-poppins'>
+                                    <h3 className='text-xl font-semibold text-black dark:text-white font-poppins'>
                                         {experience.title}
                                     </h3>
                                     <p
-                                        className='text-base font-medium text-black-500'
+                                        className='text-base font-medium text-black-500 dark:text-slate-400'
                                         style={{ margin: 0 }}
                                     >
                                         {experience.company_name}
@@ -98,7 +108,7 @@ const About = () => {
                                     {experience.points.map((point, index) => (
                                         <li
                                             key={`experience-point-${index}`}
-                                            className='pl-1 text-sm font-normal text-black-500/50'
+                                            className='pl-1 text-sm font-normal text-black-500/50 dark:text-slate-300'
                                         >
                                             {point}
                                         </li>
@@ -110,7 +120,7 @@ const About = () => {
                 </div>
             </div>
 
-            <hr className='border-slate-200' />
+            <hr className='border-slate-200 dark:border-slate-700' />
 
             <CTA />
         </section>
