@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import { Footer, Navbar, FilmBurnTransition } from "./components";
-import { About, Contact, Home, Projects, Certificates, Services } from "./pages";
+import { About, Contact, Home, Projects, Certificates, Services, RecruiterMode } from "./pages";
 
 const AnimatedRoutes = () => {
     const location = useLocation();
@@ -22,6 +22,7 @@ const AnimatedRoutes = () => {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/certificates" element={<Certificates />} />
+                <Route path="/recruiter" element={<RecruiterMode />} />
                 <Route path="/contact" element={<Contact />} />
             </Routes>
         </div>

@@ -1,0 +1,6 @@
+
+C:\Users\moham\OneDrive\Desktop\Ashraf_Game\src\pages\RecruiterMode.jsx
+  212:13  error  Parsing error: Expected corresponding JSX closing tag for <div>
+
+??? 1 problem (1 error, 0 warnings)
+

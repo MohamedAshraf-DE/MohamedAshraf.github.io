@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useEffect, useRef, useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import { Stars, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -143,22 +144,25 @@ const Home = () => {
                 </Suspense>
             </Canvas>
 
-            {/* Drag Hint Overlay */}
-            {!isRotating && currentStage === 1 && (
-                <div className='absolute bottom-20 left-0 right-0 flex justify-center items-center z-10 animate-bounce pointer-events-none'>
-                    <div className='bg-white/40 backdrop-blur-sm px-4 py-2 rounded-full text-blue-900 font-semibold shadow-md border border-white/50'>
-                        Drag to Explore ↔️
-                    </div>
-                </div>
-            )}
+            {/* Drag Hint Overlay Removed */}
 
-            <div className='absolute bottom-2 left-2'>
+            <div className='absolute bottom-2 left-2 z-10'>
                 <img
                     src={!isPlayingMusic ? soundoff : soundon}
                     alt='jukebox'
                     onClick={() => setIsPlayingMusic(!isPlayingMusic)}
                     className='w-10 h-10 cursor-pointer object-contain'
                 />
+            </div>
+
+            {/* Recruiter Mode Button */}
+            <div className='absolute bottom-10 left-0 right-0 flex justify-center items-center z-10 pointer-events-auto'>
+                <Link to="/recruiter" className="px-6 py-2.5 bg-slate-900/80 backdrop-blur-md text-white font-semibold rounded-full shadow-lg border border-white/10 hover:bg-blue-600 transition-colors flex items-center gap-2 group">
+                    <svg className="w-5 h-5 group-hover:animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                    Recruiter Mode
+                </Link>
             </div>
         </section>
     );

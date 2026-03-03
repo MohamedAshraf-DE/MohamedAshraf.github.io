@@ -31,6 +31,8 @@ const Navbar = () => {
         return baseClass;
     };
 
+    if (location.pathname === "/recruiter") return null;
+
     return (
         <header className="header flex items-center justify-between px-4 py-2 absolute top-0 w-full z-50 bg-transparent">
             {/* Clickable Rounded Logo to LinkedIn */}

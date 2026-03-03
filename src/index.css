@@ -8,6 +8,10 @@
   --green-rgb: 125 161 35;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Work Sans", sans-serif;
 }
@@ -348,6 +352,30 @@ body:has(.card[data-color="green"]:hover) {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+@keyframes typing {
+  from {
+    width: 0
+  }
+
+  to {
+    width: 100%
+  }
+}
+
+@keyframes blink-caret {
+
+  from,
+  to {
+    border-color: transparent
+  }
+
+  50% {
+    border-color: #10b981;
+  }
+
+  /* Emerald 500 */
 }
 
 .animate-fade-in-up {

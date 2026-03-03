@@ -1,13 +1,19 @@
 import { socialLinks } from "../constants";
 
+import { useLocation } from "react-router-dom";
+
 const Footer = () => {
+    const location = useLocation();
+
+    if (location.pathname === "/recruiter") return null;
+
     return (
         <footer className="footer font-poppins">
             <hr className="border-slate-200" />
 
             <div className="footer-container">
-                <p className="dark:text-slate-200 transition-colors">
-                    ©2025 <strong>Mohamed Ashraf</strong>. All rights reserved.
+                <p className="dark:text-slate-200 transition-colors text-center text-sm md:text-base">
+                    © {new Date().getFullYear()} <strong>Mohamed Ashraf Mohamed</strong>. All rights reserved.
                 </p>
 
                 <div className="flex items-center justify-center gap-3 mt-2">
