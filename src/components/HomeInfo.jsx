@@ -46,9 +46,9 @@ const HomeInfo = ({ currentStage }) => {
             <h1 className="px-8 py-4 mx-5 text-center text-white sm:text-xl sm:leading-snug neo-brutalism-blue">
                 Hi, I'm <span className="mx-2 font-semibold text-white drop-shadow-md">{text}<span className="animate-pulse">|</span></span> 👋
                 <br />
-                {greeting.msg} <img src={egyptFlag} alt="Egypt flag" className="inline w-6 h-4 mx-1" /> {greeting.emoji}
-                <br />
                 A Computer & Communications Engineer
+                <br />
+                {greeting.msg} <img src={egyptFlag} alt="Egypt flag" className="inline w-6 h-4 mx-1" /> {greeting.emoji}
             </h1>
         );
     }
