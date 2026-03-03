@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Stars, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-import sakura from "../assets/sakura.mp3";
+import godfather from "../assets/godfather.webm";
 import { ThemeContext } from "../context/ThemeContext";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
@@ -30,7 +30,7 @@ const Home = () => {
     const { theme } = useContext(ThemeContext);
     const isDark = theme === "dark";
 
-    const audioRef = useRef(new Audio(sakura));
+    const audioRef = useRef(new Audio(godfather));
     audioRef.current.volume = 0.4;
     audioRef.current.loop = true;
 
