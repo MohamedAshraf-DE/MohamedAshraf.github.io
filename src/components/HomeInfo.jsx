@@ -48,7 +48,7 @@ const HomeInfo = ({ currentStage }) => {
                 <br />
                 {greeting.msg} <img src={egyptFlag} alt="Egypt flag" className="inline w-6 h-4 mx-1" /> {greeting.emoji}
                 <br />
-                A Computer & Communications Engineering Student
+                A Computer & Communications Engineer
             </h1>
         );
     }
