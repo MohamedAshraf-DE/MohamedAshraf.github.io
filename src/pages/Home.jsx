@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Stars, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-import godfather from "../assets/godfather.webm";
+import godfather from "../assets/godfather_clean.webm";
 import { ThemeContext } from "../context/ThemeContext";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
@@ -146,7 +146,7 @@ const Home = () => {
 
             {/* Drag Hint Overlay Removed */}
 
-            <div className='absolute bottom-2 left-2 z-10'>
+            <div className='absolute top-6 left-6 z-10'>
                 <img
                     src={!isPlayingMusic ? soundoff : soundon}
                     alt='jukebox'
