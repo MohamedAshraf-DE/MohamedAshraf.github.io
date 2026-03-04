@@ -32,6 +32,28 @@ const AnimatedRoutes = () => {
     );
 };
 
+const GlobalAudioToggle = ({ isPlayingMusic, setIsPlayingMusic }) => {
+    const location = useLocation();
+
+    // On Recruiter Mode mobile and desktop, top-center overlaps with the layout header.
+    // So we use bottom-6 left-6 universally for Recruiter Mode.
+    // Otherwise, we use top-center for mobile and bottom-left for desktop.
+    const containerClasses = location.pathname === "/recruiter"
+        ? "fixed bottom-6 left-6 z-50"
+        : "fixed top-4 left-1/2 -translate-x-1/2 sm:top-auto sm:translate-x-0 sm:bottom-6 sm:left-6 z-50";
+
+    return (
+        <div className={containerClasses}>
+            <img
+                src={!isPlayingMusic ? soundoff : soundon}
+                alt='jukebox'
+                onClick={() => setIsPlayingMusic(!isPlayingMusic)}
+                className='w-10 h-10 cursor-pointer object-contain drop-shadow-md hover:scale-110 transition-transform'
+            />
+        </div>
+    );
+};
+
 const App = () => {
     const audioRef = useRef(new Audio(godfather));
     audioRef.current.volume = 0.4;
@@ -55,14 +77,10 @@ const App = () => {
                 <Navbar />
 
                 {/* Global Music Toggle */}
-                <div className='fixed top-4 left-1/2 -translate-x-1/2 sm:top-auto sm:translate-x-0 sm:bottom-6 sm:left-6 z-50'>
-                    <img
-                        src={!isPlayingMusic ? soundoff : soundon}
-                        alt='jukebox'
-                        onClick={() => setIsPlayingMusic(!isPlayingMusic)}
-                        className='w-10 h-10 cursor-pointer object-contain drop-shadow-md hover:scale-110 transition-transform'
-                    />
-                </div>
+                <GlobalAudioToggle
+                    isPlayingMusic={isPlayingMusic}
+                    setIsPlayingMusic={setIsPlayingMusic}
+                />
 
                 {/* Burn only on entering Services, blocked if from Contact */}
                 <FilmBurnTransition
