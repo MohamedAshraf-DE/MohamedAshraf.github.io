@@ -55,7 +55,7 @@ const App = () => {
                 <Navbar />
 
                 {/* Global Music Toggle */}
-                <div className='fixed bottom-6 left-6 z-50'>
+                <div className='fixed top-4 left-1/2 -translate-x-1/2 sm:top-auto sm:translate-x-0 sm:bottom-6 sm:left-6 z-50'>
                     <img
                         src={!isPlayingMusic ? soundoff : soundon}
                         alt='jukebox'
