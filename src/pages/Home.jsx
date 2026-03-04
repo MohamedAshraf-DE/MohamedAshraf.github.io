@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 import { Stars, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
-import godfather from "../assets/godfather_clean.webm";
-import { ThemeContext } from "../context/ThemeContext";
 import { HomeInfo, Loader } from "../components";
-import { soundoff, soundon } from "../assets/icons";
 import { crescentMoon } from "../assets/images";
 import { Bird, Island, Plane, Sky } from "../models";
 
@@ -27,26 +24,8 @@ const NightSkyMoon = () => {
 };
 
 const Home = () => {
-    const { theme } = useContext(ThemeContext);
-    const isDark = theme === "dark";
-
-    const audioRef = useRef(new Audio(godfather));
-    audioRef.current.volume = 0.4;
-    audioRef.current.loop = true;
-
     const [currentStage, setCurrentStage] = useState(1);
     const [isRotating, setIsRotating] = useState(false);
-    const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-
-    useEffect(() => {
-        if (isPlayingMusic) {
-            audioRef.current.play();
-        }
-
-        return () => {
-            audioRef.current.pause();
-        };
-    }, [isPlayingMusic]);
 
     const adjustBiplaneForScreenSize = () => {
         let screenScale, screenPosition;
@@ -145,15 +124,6 @@ const Home = () => {
             </Canvas>
 
             {/* Drag Hint Overlay Removed */}
-
-            <div className='absolute top-6 left-6 z-10'>
-                <img
-                    src={!isPlayingMusic ? soundoff : soundon}
-                    alt='jukebox'
-                    onClick={() => setIsPlayingMusic(!isPlayingMusic)}
-                    className='w-10 h-10 cursor-pointer object-contain'
-                />
-            </div>
 
             {/* Recruiter Mode Button */}
             <div className='absolute bottom-10 left-0 right-0 flex justify-center items-center z-10 pointer-events-auto'>

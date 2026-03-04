@@ -4,9 +4,12 @@ import {
     Routes,
     useLocation,
 } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 import { Footer, Navbar, FilmBurnTransition } from "./components";
 import { About, Contact, Home, Projects, Certificates, Services, RecruiterMode } from "./pages";
+import { soundoff, soundon } from "./assets/icons";
+import godfather from "./assets/godfather_clean.webm";
 
 const AnimatedRoutes = () => {
     const location = useLocation();
@@ -30,10 +33,36 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => {
+    const audioRef = useRef(new Audio(godfather));
+    audioRef.current.volume = 0.4;
+    audioRef.current.loop = true;
+
+    const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+
+    useEffect(() => {
+        if (isPlayingMusic) {
+            audioRef.current.play();
+        }
+
+        return () => {
+            audioRef.current.pause();
+        };
+    }, [isPlayingMusic]);
+
     return (
-        <main className="bg-slate-300/20 dark:bg-slate-900 transition-colors duration-500">
+        <main className="bg-slate-300/20 dark:bg-slate-900 transition-colors duration-500 relative">
             <Router>
                 <Navbar />
+
+                {/* Global Music Toggle */}
+                <div className='fixed top-6 left-6 z-50'>
+                    <img
+                        src={!isPlayingMusic ? soundoff : soundon}
+                        alt='jukebox'
+                        onClick={() => setIsPlayingMusic(!isPlayingMusic)}
+                        className='w-10 h-10 cursor-pointer object-contain drop-shadow-md hover:scale-110 transition-transform'
+                    />
+                </div>
 
                 {/* Burn only on entering Services, blocked if from Contact */}
                 <FilmBurnTransition
