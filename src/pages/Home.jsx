@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Stars, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
+import { ThemeContext } from "../context/ThemeContext";
 import { HomeInfo, Loader } from "../components";
 import { crescentMoon } from "../assets/images";
 import { Bird, Island, Plane, Sky } from "../models";
@@ -24,6 +25,9 @@ const NightSkyMoon = () => {
 };
 
 const Home = () => {
+    const { theme } = useContext(ThemeContext);
+    const isDark = theme === "dark";
+
     const [currentStage, setCurrentStage] = useState(1);
     const [isRotating, setIsRotating] = useState(false);
 
