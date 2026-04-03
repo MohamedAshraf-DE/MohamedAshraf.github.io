@@ -26,6 +26,7 @@ import servicesFrontend from './services-frontend.png';
 import servicesEmbedded from './services-embedded.png';
 import servicesSql from './services-sql.png';
 import crescentMoon from './crescent-moon.svg';
+import puzzle8 from './puzzle8.png';
 export {
     hero,
     meta,
@@ -54,5 +55,6 @@ export {
     servicesFrontend,
     servicesEmbedded,
     servicesSql,
-    crescentMoon
+    crescentMoon,
+    puzzle8
 };

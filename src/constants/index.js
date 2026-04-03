@@ -6,7 +6,8 @@ import {
     gammaImage,
     uber,
     book,
-    bank
+    bank,
+    puzzle8
 } from "../assets/images";
 import {
     contact,
@@ -188,5 +189,15 @@ export const projects = [
         description: "A comprehensive database design and implementation for an online book store.",
         link: "https://github.com/MohamedAshraf-DE/Online-Book-store",
         category: "Database Design",
+    },
+    {
+        iconUrl: react,
+        imageUrl: puzzle8,
+        theme: "btn-back-blue",
+        name: "8-Puzzle Game AI",
+        description: "A fast, modern 8-puzzle game web application featuring smooth animations and an embedded AI agent to autonomously compute and play out the optimal puzzle solution.",
+        link: "https://lnkd.in/dH7ugQzW",
+        githubLink: "https://github.com/MohamedAshraf-DE/8-puzzle",
+        category: "Artificial Intelligence",
     },
 ];

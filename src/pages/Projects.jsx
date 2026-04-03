@@ -94,7 +94,6 @@ const Projects = () => {
                             <p className='text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1'>
                                 {project.description}
                             </p>
-
                             <div className='mt-auto flex justify-between items-center'>
                                 {project.link && (
                                     <Link
@@ -109,6 +108,16 @@ const Projects = () => {
                                             alt='arrow'
                                             className='w-3 h-3 object-contain dark:invert'
                                         />
+                                    </Link>
+                                )}
+                                {project.githubLink && (
+                                    <Link
+                                        to={project.githubLink}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                        className='inline-flex items-center gap-2 font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 transition-colors text-sm'
+                                    >
+                                        GitHub Repo
                                     </Link>
                                 )}
                             </div>
