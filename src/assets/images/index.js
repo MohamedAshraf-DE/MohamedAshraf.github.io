@@ -27,6 +27,11 @@ import servicesEmbedded from './services-embedded.png';
 import servicesSql from './services-sql.png';
 import crescentMoon from './crescent-moon.svg';
 import puzzle8 from './puzzle8.png';
+import barcelona from './barcelona.jpg';
+import galytna from './جاليتنا.png';
+import connect4 from './connect4.png';
+import suddoku from './suddoku.png';
+
 export {
     hero,
     meta,
@@ -56,5 +61,9 @@ export {
     servicesEmbedded,
     servicesSql,
     crescentMoon,
-    puzzle8
+    puzzle8,
+    barcelona,
+    galytna,
+    connect4,
+    suddoku
 };
