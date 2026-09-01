@@ -26,7 +26,7 @@ const About = () => {
 
             <div className='flex flex-col gap-3 mt-5 text-slate-500 dark:text-slate-300'>
                 <p>
-                    Computer and Communication Engineer based in Egypt, specializing in building dashboards and interactive projects, and aspiring to become a Data Engineer or work in a data-related field.
+                    Computer and Communication Engineering student based in Egypt, passionate about Artificial Intelligence and Machine Learning, with experience building predictive models, data-driven applications, and interactive software projects.
                 </p>
             </div>
 
