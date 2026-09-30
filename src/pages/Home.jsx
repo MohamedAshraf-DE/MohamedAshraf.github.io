@@ -95,7 +95,7 @@ const Home = () => {
 
     return (
         <section aria-busy={!sceneReady} className={`w-full relative nature-scene ${isDark ? 'scene-night' : 'scene-day'}`}>
-            {!sceneReady && <img className="scene-poster" src={`/scene-assets/mobile/academy/${isDark?'night':'day'}.webp`} alt="" aria-hidden="true" fetchPriority="high" />}
+            {!sceneReady && <img className="scene-poster" src={`/scene-assets/academy/${isDark?'night':'day'}.webp`} alt="" aria-hidden="true" fetchPriority="high" />}
             <div className='scene-intro absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
                 {currentStage && <HomeInfo currentStage={currentStage} />}
             </div>
@@ -103,8 +103,8 @@ const Home = () => {
             <Canvas
                 frameloop={visible ? 'always' : 'never'}
                 shadows={compact ? false : THREE.PCFSoftShadowMap}
-                dpr={[1, compact ? 1 : narrow ? 1.25 : 1.5]}
-                gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: compact ? 'mediump' : 'highp', stencil: false }}
+                dpr={[1, compact ? 1.5 : narrow ? 1.25 : 1.5]}
+                gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: 'highp', stencil: false }}
                 className={`w-full h-full bg-transparent ${isRotating ? "cursor-grabbing" : "cursor-grab"}`}
                 style={{ opacity: sceneReady ? 1 : 0, transition: 'opacity 300ms ease' }}
                 camera={{ near: 0.1, far: 1800 }}
