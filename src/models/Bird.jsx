@@ -1,62 +1,44 @@
-import { useEffect, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
-import { useAnimations, useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { useAnimations, useGLTF } from '@react-three/drei';
+import birdScene from '../assets/3d/bird.glb';
+import { useFlightScene } from './useFlightScene';
 
-import birdScene from "../assets/3d/bird.glb";
+useGLTF.preload(birdScene);
 
-// 3D Model from: https://sketchfab.com/3d-models/phoenix-bird-844ba0cf144a413ea92c779f18912042
-export function Bird() {
+export function Bird({ enhanced = false }) {
     const birdRef = useRef();
-
-    // Load the 3D model and animations from the provided GLTF file
-    const { scene, animations } = useGLTF(birdScene);
-
-    // Get access to the animations for the bird
-    const { actions } = useAnimations(animations, birdRef);
-
-    // Play the "Take 001" animation when the component mounts
-    // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.
+    const direction = useRef(1);
+    const flightTime = useRef(0);
+    const { scene: source, animations } = useGLTF(birdScene);
+    const scene = useFlightScene(source, enhanced, animations);
+    const { actions } = useAnimations(animations, scene);
     useEffect(() => {
-        actions["Take 001"].play();
-    }, []);
-
-    useFrame(({ clock, camera }) => {
-        // Update the Y position to simulate bird-like motion using a sine wave
-        birdRef.current.position.y = Math.sin(clock.elapsedTime) * 0.2 + 2;
-
-        // Check if the bird reached a certain endpoint relative to the camera
-        if (birdRef.current.position.x > camera.position.x + 10) {
-            // Change direction to backward and rotate the bird 180 degrees on the y-axis
-            birdRef.current.rotation.y = Math.PI;
-        } else if (birdRef.current.position.x < camera.position.x - 10) {
-            // Change direction to forward and reset the bird's rotation
-            birdRef.current.rotation.y = 0;
+        const action = actions['Take 001'];
+        action?.reset().play();
+        return () => action?.stop();
+    }, [actions, scene]);
+    useFrame(({ clock, camera }, delta) => {
+        const bird = birdRef.current;
+        if (enhanced) {
+            flightTime.current += Math.min(delta, 0.05);
+            const angle = flightTime.current * 0.2 + 0.5;
+            const dx = -25 * Math.sin(angle), dz = 22 * Math.cos(angle);
+            const dy = 3.2 * Math.cos(angle * 2);
+            bird.position.set(25 * Math.cos(angle), 14 + Math.sin(angle * 2) * 1.6, 22 * Math.sin(angle));
+            bird.rotation.order = 'YXZ';
+            bird.rotation.set(0.12 + Math.sin(angle) * 0.06, Math.atan2(-dz, dx), Math.atan2(dy, Math.hypot(dx,dz)));
+            return;
         }
-
-        // Update the X and Z positions based on the direction
-        if (birdRef.current.rotation.y === 0) {
-            // Moving forward
-            birdRef.current.position.x += 0.01;
-            birdRef.current.position.z -= 0.01;
-        } else {
-            // Moving backward
-            birdRef.current.position.x -= 0.01;
-            birdRef.current.position.z += 0.01;
-        }
+        bird.position.y = Math.sin(clock.elapsedTime) * 0.2 + 2;
+        if (bird.position.x > camera.position.x + 10) direction.current = -1;
+        else if (bird.position.x < camera.position.x - 10) direction.current = 1;
+        bird.rotation.y = direction.current === 1 ? 0 : Math.PI;
+        const distance = Math.min(delta, 0.05) * 0.6 * direction.current;
+        bird.position.x += distance;
+        bird.position.z -= distance;
     });
-
-    return (
-        // to create and display 3D objects
-        <
-        mesh ref={birdRef}
-            position={
-                [-5, 2, 1]}
-            scale={
-                [0.003, 0.003, 0.003]} >
-        // use the primitive element when you want to directly embed a complex 3D
-            model or scene <
-                primitive object={scene}
-            /> <
-        /mesh>
-            );
+    return <group ref={birdRef} position={enhanced ? [25,14,0] : [-5, 2, 1]} scale={enhanced ? 0.007 : 0.003}>
+        <primitive object={scene} />
+    </group>;
 }

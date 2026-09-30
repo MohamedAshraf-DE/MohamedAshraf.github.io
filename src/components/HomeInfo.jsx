@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { arrow } from "../assets/icons";
-import { egyptFlag } from "../assets/images";
+import egyptFlag from "flag-icons/flags/4x3/eg.svg";
 import { useState, useEffect } from "react";
 
 const HomeInfo = ({ currentStage }) => {
@@ -48,7 +48,7 @@ const HomeInfo = ({ currentStage }) => {
                 <br />
                 A Computer & Communications Engineer
                 <br />
-                {greeting.msg} <img src={egyptFlag} alt="Egypt flag" className="inline w-6 h-4 mx-1" /> {greeting.emoji}
+                {greeting.msg} <img src={egyptFlag} alt="Egypt flag" width="28" height="21" className="egypt-flag" /> {greeting.emoji}
             </h1>
         );
     }

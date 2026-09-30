@@ -1,6 +1,5 @@
-import { createContext, useState, useEffect } from "react";
-
-export const ThemeContext = createContext();
+import { useState, useEffect } from "react";
+import { ThemeContext } from './theme';
 
 export const ThemeProvider = ({ children }) => {
     // Check local storage or system preference
@@ -28,6 +27,8 @@ export const ThemeProvider = ({ children }) => {
         }
         return "light";
     });
+    const [sunset, setSunset] = useState(() => localStorage.getItem('environment') === 'sunset');
+    const environment = sunset ? 'sunset' : theme === 'dark' ? 'night' : 'day';
 
     // Apply class to html tag whenever theme changes
     useEffect(() => {
@@ -40,12 +41,20 @@ export const ThemeProvider = ({ children }) => {
         localStorage.setItem("theme", theme);
     }, [theme]);
 
+    useEffect(() => { localStorage.setItem('environment', environment); }, [environment]);
+
     const toggleTheme = () => {
+        setSunset(false);
         setTheme(prevTheme => (prevTheme === "light" ? "dark" : "light"));
     };
 
+    const setEnvironment = mode => {
+        setSunset(mode === 'sunset');
+        setTheme(mode === 'night' ? 'dark' : 'light');
+    };
+
     return (
-        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme, toggleTheme, environment, setEnvironment }}>
             {children}
         </ThemeContext.Provider>
     );

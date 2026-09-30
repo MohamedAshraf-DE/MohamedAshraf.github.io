@@ -4,7 +4,7 @@ import {
     Routes,
     useLocation,
 } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 import { Footer, Navbar, FilmBurnTransition } from "./components";
 import { About, Contact, Home, Projects, Certificates, Services, RecruiterMode } from "./pages";
@@ -14,8 +14,8 @@ import godfather from "./assets/godfather_clean.webm";
 const AnimatedRoutes = () => {
     const location = useLocation();
 
-    // Contact without wrapper animations
-    const wrapperClass = location.pathname === "/contact" ? "" : "animate-fade-in-up";
+    // The island appears as soon as its first frame is ready, without a route fade.
+    const wrapperClass = location.pathname === "/contact" || location.pathname === "/" ? "" : "animate-fade-in-up";
 
     return (
         <div key={location.pathname} className={wrapperClass}>
@@ -55,21 +55,26 @@ const GlobalAudioToggle = ({ isPlayingMusic, setIsPlayingMusic }) => {
 };
 
 const App = () => {
-    const audioRef = useRef(new Audio(godfather));
-    audioRef.current.volume = 0.4;
-    audioRef.current.loop = true;
+    const [music] = useState(() => {
+        const audio = new Audio(godfather);
+        // Keep the soundtrack out of the initial island download.
+        audio.preload = 'none';
+        audio.volume = 0.4;
+        audio.loop = true;
+        return audio;
+    });
 
     const [isPlayingMusic, setIsPlayingMusic] = useState(false);
 
     useEffect(() => {
         if (isPlayingMusic) {
-            audioRef.current.play();
+            music.play().catch(() => setIsPlayingMusic(false));
         }
 
         return () => {
-            audioRef.current.pause();
+            music.pause();
         };
-    }, [isPlayingMusic]);
+    }, [isPlayingMusic, music]);
 
     return (
         <main className="bg-slate-300/20 dark:bg-slate-900 transition-colors duration-500 relative">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion as Motion } from "framer-motion";
 import { skills, experiences, projects, socialLinks } from "../constants";
 import cv from "../assets/images/Mohamed_Ashraf_CV.pdf";
 import mylogo from "../assets/images/mylogo.png";
@@ -17,7 +17,7 @@ import { Canvas } from "@react-three/fiber";
 import { PerspectiveCamera, Environment } from "@react-three/drei";
 import useAlert from "../hooks/useAlert";
 import { Alert } from "../components";
-import { LoginCharacters } from "../models";
+import LoginCharacters from "../models/LoginCharacters";
 
 import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
@@ -78,7 +78,7 @@ const RecruiterMode = () => {
                     showAlert({ show: true, text: "✅ Thank you! Your message has been sent successfully.", type: "success" });
                     setTimeout(() => { hideAlert(); setForm({ name: "", email: "", message: "" }); setFormState("idle"); }, 3000);
                 },
-                (error) => {
+                () => {
                     setLoading(false);
                     setFormState("error");
                     showAlert({ show: true, text: "❌ Something went wrong. Please try again.", type: "danger" });
@@ -151,11 +151,12 @@ const RecruiterMode = () => {
 
             {/* Navbar */}
             <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "bg-zinc-950/90 backdrop-blur-md text-white border-b border-zinc-800 shadow-sm py-4" : "bg-transparent text-zinc-100 py-6"}`}>
-                <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-                    <div className="font-bold text-xl tracking-tight text-white group cursor-pointer hover:text-emerald-400 transition-colors flex items-center gap-3">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center gap-2">
+                    <div className="font-bold text-base sm:text-xl tracking-tight text-white group cursor-pointer hover:text-emerald-400 transition-colors flex items-center gap-2 sm:gap-3">
                         <img src={mylogo} alt="Logo" className="w-8 h-8 object-contain" />
                         <span>Mohamed <span className="text-emerald-500">Ashraf</span></span>
                     </div>
+                    <Link to="/" className="lg:hidden shrink-0 px-2.5 py-1.5 border border-emerald-500/50 rounded-lg text-xs font-medium text-emerald-400 hover:bg-emerald-500/10 transition-colors">3D Mode</Link>
                     <div className="hidden lg:flex gap-6 items-center text-sm font-medium">
                         <a href="#home" className="hover:text-emerald-400 transition-colors">Home</a>
                         <a href="#about" className="hover:text-emerald-400 transition-colors">About</a>
@@ -170,7 +171,7 @@ const RecruiterMode = () => {
             </nav>
 
             {/* Hero Section */}
-            <motion.section
+            <Motion.section
                 id="home"
                 className="relative pt-32 pb-24 px-6 min-h-screen flex flex-col items-center justify-center bg-black text-white overflow-hidden"
                 initial={{ opacity: 0, y: 40 }}
@@ -254,10 +255,10 @@ const RecruiterMode = () => {
                         </div>
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* About Section */}
-            <motion.section
+            <Motion.section
                 id="about"
                 className="py-24 px-6 bg-black border-t border-zinc-800/50"
                 initial={{ opacity: 0, y: 40 }}
@@ -337,10 +338,10 @@ const RecruiterMode = () => {
                         </div>
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* Skills Section */}
-            <motion.section
+            <Motion.section
                 id="skills"
                 className="py-24 px-6 bg-black border-t border-zinc-800/50"
                 initial={{ opacity: 0, y: 40 }}
@@ -377,10 +378,10 @@ const RecruiterMode = () => {
                         ))}
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* Experience Section */}
-            <motion.section
+            <Motion.section
                 id="experience"
                 className="py-24 px-6 bg-black border-t border-zinc-800/50"
                 initial={{ opacity: 0, y: 40 }}
@@ -396,7 +397,7 @@ const RecruiterMode = () => {
 
                     <div className="flex mt-12 justify-center">
                         <VerticalTimeline lineColor="#27272a">
-                            {experiences.map((experience, index) => (
+                            {experiences.map((experience) => (
                                 <VerticalTimelineElement
                                     key={experience.company_name}
                                     date={experience.date}
@@ -452,10 +453,10 @@ const RecruiterMode = () => {
                         </VerticalTimeline>
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* Projects Section */}
-            <motion.section
+            <Motion.section
                 id="projects"
                 className="py-24 px-6 bg-black border-t border-zinc-800/50"
                 initial={{ opacity: 0, y: 40 }}
@@ -470,7 +471,7 @@ const RecruiterMode = () => {
                     </div>
 
                     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 my-10'>
-                        {projects.map((project, index) => (
+                        {projects.map((project) => (
                             <div
                                 className='bg-zinc-900 rounded-2xl overflow-hidden shadow-lg border border-zinc-800 flex flex-col group hover:border-emerald-500/50 hover:shadow-[0_0_25px_rgba(16,185,129,0.15)] transition-all duration-300'
                                 key={project.name}
@@ -541,10 +542,10 @@ const RecruiterMode = () => {
                         </a>
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* Certificates Section */}
-            <motion.section
+            <Motion.section
                 id="certificates"
                 className="py-24 px-6 bg-black border-t border-zinc-800/50"
                 initial={{ opacity: 0, y: 40 }}
@@ -559,7 +560,7 @@ const RecruiterMode = () => {
                     </div>
 
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 my-10'>
-                        {certificates.map((certificate, index) => (
+                        {certificates.map((certificate) => (
                             <div
                                 className='certificate-card flex flex-col group animate-fade-in-up bg-zinc-950 rounded-xl shadow-lg border border-zinc-800 overflow-hidden hover:border-emerald-500/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.1)] transition-all duration-300'
                                 key={certificate.id}
@@ -609,10 +610,10 @@ const RecruiterMode = () => {
                         ))}
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* Contact Section */}
-            <motion.section
+            <Motion.section
                 id="contact"
                 className='relative flex flex-col justify-center items-center py-24 px-6 bg-black border-t border-zinc-800/50 overflow-hidden'
                 onMouseMove={handleMouseMove}
@@ -808,7 +809,7 @@ const RecruiterMode = () => {
 
                     </div>
                 </div>
-            </motion.section>
+            </Motion.section>
 
             {/* Footer / CTA padding */}
             <div className="py-10 bg-black text-center text-zinc-600 text-sm border-t border-zinc-800/50" >

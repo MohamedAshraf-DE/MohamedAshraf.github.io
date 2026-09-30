@@ -6,7 +6,7 @@ import { useContext } from "react";
 
 import { CTA } from "../components";
 import { experiences, skills } from "../constants";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/theme";
 
 import "react-vertical-timeline-component/style.min.css";
 
@@ -66,7 +66,7 @@ const About = () => {
 
                 <div className='flex mt-12'>
                     <VerticalTimeline>
-                        {experiences.map((experience, index) => (
+                        {experiences.map(experience => (
                             <VerticalTimelineElement
                                 key={experience.company_name}
                                 date={experience.date}

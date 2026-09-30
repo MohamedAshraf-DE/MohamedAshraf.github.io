@@ -5,7 +5,7 @@ import { PerspectiveCamera, Environment } from "@react-three/drei";
 import useAlert from "../hooks/useAlert";
 import { Alert } from "../components";
 import { socialLinks } from "../constants";
-import { LoginCharacters } from "../models";
+import LoginCharacters from "../models/LoginCharacters";
 
 const Contact = () => {
     const formRef = useRef();
@@ -70,7 +70,7 @@ const Contact = () => {
                         setFormState("idle");
                     }, 3000);
                 },
-                (error) => {
+                () => {
                     setLoading(false);
                     setFormState("error");
                     showAlert({

@@ -2,7 +2,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { useContext, useState } from "react";
 import mylogo from "../assets/images/mylogo.png";
 import cv from "../assets/images/Mohamed_Ashraf_CV.pdf";
-import { ThemeContext } from "../context/ThemeContext";
+import { ThemeContext } from "../context/theme";
 
 const Navbar = () => {
     const { theme, toggleTheme } = useContext(ThemeContext);
@@ -31,6 +31,13 @@ const Navbar = () => {
         return baseClass;
     };
 
+    const homeLink = <NavLink to="/" aria-label="Home" title="Back to Home"
+        onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); }}
+        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-400/30 bg-white/80 text-slate-700 shadow-sm backdrop-blur-md transition-colors hover:bg-white hover:text-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500 dark:bg-slate-800/80 dark:text-slate-100 dark:hover:bg-slate-700">
+        <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+            <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" />
+        </svg>
+    </NavLink>;
     if (location.pathname === "/recruiter") return null;
 
     return (
@@ -50,7 +57,8 @@ const Navbar = () => {
             </a>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex gap-7 items-center">
+            <nav className="hidden lg:flex gap-7 items-center">
+                {location.pathname !== '/' && homeLink}
                 <NavLink to="/about" className={({ isActive }) => getLinkClass(isActive)}>About</NavLink>
                 <NavLink to="/projects" className={({ isActive }) => getLinkClass(isActive)}>Projects</NavLink>
                 <NavLink to="/certificates" className={({ isActive }) => getLinkClass(isActive)}>Certificates</NavLink>
@@ -68,6 +76,11 @@ const Navbar = () => {
 
             {/* Right Controls: Theme + Mobile Menu Toggle */}
             <div className="flex items-center gap-3 z-50">
+                {location.pathname !== '/' && (
+                    <div className="lg:hidden">
+                        {homeLink}
+                    </div>
+                )}
                 {/* Theme Toggle Button */}
                 <button
                     onClick={toggleTheme}
@@ -88,7 +101,7 @@ const Navbar = () => {
 
                 {/* Hamburger Icon */}
                 <button
-                    className="md:hidden p-2 rounded-md bg-white/10 border border-white/20 backdrop-blur-md text-slate-800 dark:text-white"
+                    className="lg:hidden p-2 rounded-md bg-white/10 border border-white/20 backdrop-blur-md text-slate-800 dark:text-white"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     aria-label="Toggle Navigation Menu"
                 >
@@ -104,8 +117,11 @@ const Navbar = () => {
 
             {/* Mobile Navigation Dropdown */}
             {isMobileMenuOpen && (
-                <div className="absolute top-16 left-4 right-4 bg-white dark:bg-[#131521] shadow-2xl rounded-2xl p-4 flex flex-col items-center border border-gray-200 dark:border-white/10 md:hidden z-40 animate-fade-in-up">
+                <div className="absolute top-16 left-4 right-4 bg-white dark:bg-[#131521] shadow-2xl rounded-2xl p-4 flex flex-col items-center border border-gray-200 dark:border-white/10 lg:hidden z-40">
                     <nav className="flex flex-col w-full">
+                        {location.pathname !== '/' && (
+                            <NavLink to="/" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); }} className={({ isActive }) => getMobileLinkClass(isActive)}>Home</NavLink>
+                        )}
                         <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>About</NavLink>
                         <NavLink to="/projects" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Projects</NavLink>
                         <NavLink to="/certificates" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Certificates</NavLink>
