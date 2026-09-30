@@ -115,26 +115,34 @@ const Navbar = () => {
 
             {/* Mobile Navigation Dropdown */}
             {isMobileMenuOpen && (
-                <div className="absolute top-16 left-4 right-4 bg-white dark:bg-[#131521] shadow-2xl rounded-2xl p-4 flex flex-col items-center border border-gray-200 dark:border-white/10 lg:hidden z-40">
-                    <nav id="mobile-navigation" className="flex flex-col w-full">
-                        {location.pathname !== '/' && (
-                            <NavLink to="/" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); }} className={({ isActive }) => getMobileLinkClass(isActive)}>Home</NavLink>
-                        )}
-                        <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>About</NavLink>
-                        <NavLink to="/projects" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Projects</NavLink>
-                        <NavLink to="/certificates" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Certificates</NavLink>
-                        <NavLink to="/services" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Services</NavLink>
-                        <NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Contact</NavLink>
-                        <a
-                            href={cv}
-                            download="Mohamed_Ashraf_CV.pdf"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={getMobileLinkClass(false) + " border-none mt-2 !text-emerald-500 dark:!text-emerald-400"}
-                        >
-                            Download CV
-                        </a>
-                    </nav>
-                </div>
+                <>
+                    <button
+                        type="button"
+                        aria-label="Close Navigation Menu"
+                        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px] lg:hidden"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    />
+                    <div className="fixed top-[72px] left-4 right-4 z-50 max-h-[calc(100svh-88px)] overflow-y-auto bg-white dark:bg-[#131521] shadow-2xl rounded-2xl p-4 flex flex-col items-center border border-gray-200 dark:border-white/10 lg:hidden">
+                        <nav id="mobile-navigation" className="flex flex-col w-full">
+                            {location.pathname !== '/' && (
+                                <NavLink to="/" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); }} className={({ isActive }) => getMobileLinkClass(isActive)}>Home</NavLink>
+                            )}
+                            <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>About</NavLink>
+                            <NavLink to="/projects" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Projects</NavLink>
+                            <NavLink to="/certificates" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Certificates</NavLink>
+                            <NavLink to="/services" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Services</NavLink>
+                            <NavLink to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Contact</NavLink>
+                            <a
+                                href={cv}
+                                download="Mohamed_Ashraf_CV.pdf"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={getMobileLinkClass(false) + " border-none mt-2 !text-emerald-500 dark:!text-emerald-400"}
+                            >
+                                Download CV
+                            </a>
+                        </nav>
+                    </div>
+                </>
             )}
         </header>
     );
