@@ -103,8 +103,8 @@ const Home = () => {
             <Canvas
                 frameloop={visible ? 'always' : 'never'}
                 shadows={compact ? false : THREE.PCFSoftShadowMap}
-                dpr={[1, compact ? 1.5 : narrow ? 1.25 : 1.5]}
-                gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: 'highp', stencil: false }}
+                dpr={[1, compact ? 1 : narrow ? 1.25 : 1.5]}
+                gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: compact ? 'mediump' : 'highp', stencil: false }}
                 className={`w-full h-full bg-transparent ${isRotating ? "cursor-grabbing" : "cursor-grab"}`}
                 style={{ opacity: sceneReady ? 1 : 0, transition: 'opacity 300ms ease' }}
                 camera={{ near: 0.1, far: 1800 }}
