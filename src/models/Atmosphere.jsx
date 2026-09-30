@@ -37,7 +37,7 @@ void main(){
  #include <colorspace_fragment>
 }`;
 
-export default function Atmosphere({ nightMix, sunsetMix }) {
+export default function Atmosphere({ nightMix, sunsetMix, hideSky = false }) {
     // Three caches these uniform objects after compiling the shader. Keep their
     // identity stable and update values so theme changes reach the GPU too.
     const uniforms=useMemo(()=>({time:{value:0},night:nightMix,sunset:sunsetMix}),[nightMix,sunsetMix]);
@@ -50,12 +50,12 @@ export default function Atmosphere({ nightMix, sunsetMix }) {
     });
     return <>
         <primitive attach="fog" object={fog} />
-        <mesh renderOrder={-10}>
+        {!hideSky && <mesh renderOrder={-10}>
             <sphereGeometry args={[1720,32,16]} />
             <shaderMaterial uniforms={uniforms} vertexShader={vertexShader} fragmentShader={fragmentShader}
                 side={THREE.BackSide} depthWrite={false} />
-        </mesh>
-        <mesh position={[-720,480,-1430]}>
+        </mesh>}
+        {!hideSky && <mesh position={[-720,480,-1430]}>
             <sphereGeometry args={[49.5,32,24]} />
             <shaderMaterial uniforms={uniforms} transparent depthWrite={false} vertexShader={vertexShader} fragmentShader={`
                 uniform float night;varying vec3 skyDirection;
@@ -68,6 +68,6 @@ export default function Atmosphere({ nightMix, sunsetMix }) {
                     #include <tonemapping_fragment>
                     #include <colorspace_fragment>
                 }`} />
-        </mesh>
+        </mesh>}
     </>;
 }
