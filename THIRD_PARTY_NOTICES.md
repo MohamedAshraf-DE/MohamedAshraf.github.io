@@ -57,3 +57,10 @@ https://sketchfab.com/3d-models/hippogriff-5e43823e23e14478b553dd333c083e79
 was inspected as a user-selected reference. **It has not been downloaded or
 included.** Download requires Sketchfab sign-in. Its listed CC Attribution
 license and author credit must accompany the actual asset if it is added later.
+
+## Mobile texture variants
+
+The files under public/scene-assets/mobile are resized WebP derivatives of the
+existing Poly Haven scans and original generated landscapes/foliage credited
+above. They introduce no new external assets. Reproduction script:
+scripts/optimize-scene-assets.py.

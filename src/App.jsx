@@ -4,12 +4,21 @@ import {
     Routes,
     useLocation,
 } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect } from "react";
 
-import { Footer, Navbar, FilmBurnTransition } from "./components";
-import { About, Contact, Home, Projects, Certificates, Services, RecruiterMode } from "./pages";
+import Footer from './components/Footer';
+import Navbar from './components/Navbar';
+import FilmBurnTransition from './components/FilmBurnTransition';
 import { soundoff, soundon } from "./assets/icons";
 import godfather from "./assets/godfather_clean.webm";
+
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Certificates = lazy(() => import('./pages/Certificates'));
+const Services = lazy(() => import('./pages/Services'));
+const Contact = lazy(() => import('./pages/Contact'));
+const RecruiterMode = lazy(() => import('./pages/RecruiterMode'));
 
 const AnimatedRoutes = () => {
     const location = useLocation();
@@ -19,6 +28,7 @@ const AnimatedRoutes = () => {
 
     return (
         <div key={location.pathname} className={wrapperClass}>
+            <Suspense fallback={<div className="route-loading" role="status"><span className="loading-orbit" aria-hidden="true" /><span>{location.pathname === '/' ? 'Opening your island…' : 'Opening page…'}</span></div>}>
             <Routes location={location}>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
@@ -28,6 +38,7 @@ const AnimatedRoutes = () => {
                 <Route path="/recruiter" element={<RecruiterMode />} />
                 <Route path="/contact" element={<Contact />} />
             </Routes>
+            </Suspense>
         </div>
     );
 };

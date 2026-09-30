@@ -1,3 +1,15 @@
+.nature-scene { height: 100vh; height: 100svh; min-height: 480px; overflow: hidden; }
+.scene-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.scene-loading-overlay {
+    position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%); z-index: 20;
+    width: min(280px, calc(100% - 48px)); padding: 24px; border-radius: 18px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    background: rgba(16,32,42,.9); color: #e7ece8; border: 1px solid #ffffff26; backdrop-filter: blur(12px);
+    text-align: center; font-size: 12px;
+}
+.scene-loading-overlay strong { font-weight: 500; }
+.scene-loading-overlay > span:last-child { opacity: .65; font-size: 11px; }
+.scene-loading-overlay progress { width: 100%; height: 4px; accent-color: #c4b386; }
 .nature-scene .scene-intro h1,
 .nature-scene .scene-intro .info-box {
     background: linear-gradient(135deg, rgba(19, 38, 44, .78), rgba(28, 48, 55, .60));
@@ -45,9 +57,18 @@
 }
 .scene-loading progress { width: 100%; height: 5px; margin-top: 12px; accent-color: #b7ceb3; }
 @media(max-width:767px) {
-    .environment-switch { bottom: max(24px, env(safe-area-inset-bottom)); right: 12px; flex-direction: column; border-radius: 18px; }
-    .environment-switch button { font-size: 10px; padding: 6px 8px; }
-    .scene-actions { bottom: max(24px, env(safe-area-inset-bottom)); gap: 12px; }
+    .scene-poster { object-position: 32% center; }
+    .environment-switch { bottom: max(12px, env(safe-area-inset-bottom)); left: 50%; right: auto; transform: translateX(-50%); flex-direction: row; border-radius: 28px; }
+    .environment-switch button { font-size: 11px; min-height: 40px; min-width: 62px; padding: 8px 12px; }
+    .scene-actions { bottom: max(80px, calc(env(safe-area-inset-bottom) + 70px)); gap: 10px; }
+    .scene-actions > a { min-height: 44px; font-size: 14px; }
     .scene-hint { font-size: 10px; }
     .nature-scene .scene-intro h1 { font-size: 13px; padding: 12px 16px; }
 }
+@media(max-height:560px) and (max-width:950px) {
+    .nature-scene { min-height: 400px; }
+    .nature-scene .scene-intro { top: 78px; }
+    .nature-scene .scene-intro h1 { font-size: 11px; padding: 8px 12px; }
+    .scene-hint { display: none; }
+}
+@media(prefers-reduced-motion:reduce) { .scene-loading-overlay .loading-orbit { animation: none; } }

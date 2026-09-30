@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useRef } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import islandScene from '../assets/3d/island.glb';
@@ -8,15 +8,15 @@ import IslandLife from './IslandLife';
 import MagicSuspension from './MagicSuspension';
 import GeologicalBase from './GeologicalBase';
 import MiniatureCastle from './MiniatureCastle';
-import IslandVillage from './IslandVillage';
+const IslandVillage = lazy(() => import('./IslandVillage'));
 import { advanceIslandMotion } from './islandMotion';
 import { Color, MathUtils } from 'three';
 
 useGLTF.preload(islandScene);
 
-function NaturalIsland({ nodes, sourceMaterial, nightMix, compact }) {
-    const details = useMemo(() => prepareIsland(nodes, sourceMaterial), [nodes, sourceMaterial]);
-    const material = useMemo(() => naturalMaterial(sourceMaterial, details.canopies), [sourceMaterial,details]);
+function NaturalIsland({ nodes, sourceMaterial, nightMix, compact, decorated, onReady }) {
+    const details = useMemo(() => prepareIsland(nodes, sourceMaterial, compact), [nodes, sourceMaterial, compact]);
+    const material = useMemo(() => naturalMaterial(sourceMaterial, details.canopies, compact), [sourceMaterial, details, compact]);
     const colors=useMemo(()=>({day:new Color('#ffffff'),night:new Color('#ffc078')}),[]);
     useFrame(({clock})=>{
         material.emissive.lerpColors(colors.day,colors.night,nightMix.value);
@@ -29,17 +29,19 @@ function NaturalIsland({ nodes, sourceMaterial, nightMix, compact }) {
     }, [details, material]);
     return <>
         {details.surfaces.map(({ name, geometry }) =>
-            <mesh key={name} geometry={geometry} material={material} dispose={null} castShadow receiveShadow />)}
-        <NatureDetails details={details} compact={compact} />
-        <IslandLife details={details} nightMix={nightMix} compact={compact} />
-        <MagicSuspension nightMix={nightMix} compact={compact} />
-        <Suspense fallback={null}><GeologicalBase /></Suspense>
-        <Suspense fallback={null}><MiniatureCastle nightMix={nightMix} /></Suspense>
-        <Suspense fallback={null}><IslandVillage details={details} nightMix={nightMix} compact={compact} /></Suspense>
+            <mesh key={name} geometry={geometry} material={material} dispose={null} castShadow={!compact} receiveShadow={!compact} />)}
+        {decorated && <>
+            <NatureDetails details={details} compact={compact} />
+            <IslandLife details={details} nightMix={nightMix} compact={compact} />
+            <MagicSuspension nightMix={nightMix} compact={compact} />
+            <Suspense fallback={null}><GeologicalBase compact={compact} /></Suspense>
+            <Suspense fallback={null}><IslandVillage details={details} nightMix={nightMix} compact={compact} /></Suspense>
+        </>}
+        <Suspense fallback={null}><MiniatureCastle nightMix={nightMix} compact={compact} onReady={onReady} /></Suspense>
     </>;
 }
 
-export function Island({ setIsRotating, setCurrentStage, nightMix, compact, ...props }) {
+export function Island({ setIsRotating, setCurrentStage, nightMix, compact, decorated = true, onReady, ...props }) {
     const islandRef = useRef();
     const { gl } = useThree();
     const { nodes, materials } = useGLTF(islandScene);
@@ -93,7 +95,7 @@ export function Island({ setIsRotating, setCurrentStage, nightMix, compact, ...p
             }
         };
         const previousTouchAction = canvas.style.touchAction;
-        canvas.style.touchAction = 'none';
+        canvas.style.touchAction = 'pan-y';
         canvas.addEventListener('pointerdown', down);
         canvas.addEventListener('pointermove', move);
         canvas.addEventListener('pointerup', up);
@@ -130,6 +132,6 @@ export function Island({ setIsRotating, setCurrentStage, nightMix, compact, ...p
     });
 
     return <group ref={islandRef} {...props}>
-        <NaturalIsland nodes={nodes} sourceMaterial={materials.PaletteMaterial001} nightMix={nightMix} compact={compact} />
+        <NaturalIsland nodes={nodes} sourceMaterial={materials.PaletteMaterial001} nightMix={nightMix} compact={compact} decorated={decorated} onReady={onReady} />
     </group>;
 }

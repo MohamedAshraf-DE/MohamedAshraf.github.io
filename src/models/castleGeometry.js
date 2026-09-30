@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 // One merged buffer per surface, including the many small Gothic details.
-export function createCastleGeometry() {
+export function createCastleGeometry(compact = false) {
     const parts = { stone: [], trim: [], roof: [], recess: [], windows: [] };
     const transform = new THREE.Object3D();
     function add(kind, geometry, position, rotation = [0, 0, 0], scale = [1, 1, 1]) {
@@ -16,9 +16,9 @@ export function createCastleGeometry() {
         parts[kind].push(flat);
     }
     const box = (kind, p, s, r) => add(kind, new THREE.BoxGeometry(...s), p, r);
-    const cylinder = (kind, p, top, bottom, height, sides = 24) =>
+    const cylinder = (kind, p, top, bottom, height, sides = compact ? 12 : 24) =>
         add(kind, new THREE.CylinderGeometry(top, bottom, height, sides), p);
-    const cone = (p, radius, height) => add('roof', new THREE.ConeGeometry(radius, height, 24), p);
+    const cone = (p, radius, height) => add('roof', new THREE.ConeGeometry(radius, height, compact ? 12 : 24), p);
     function pointedShape(w, h) {
         const s = new THREE.Shape();
         s.moveTo(-w / 2, 0); s.lineTo(w / 2, 0); s.lineTo(w / 2, h * .64);
@@ -29,9 +29,9 @@ export function createCastleGeometry() {
     function window(x, y, z, w, h, angle = 0) {
         const dir = new THREE.Vector3(Math.sin(angle), 0, Math.cos(angle));
         const p = new THREE.Vector3(x, y, z);
-        add('trim', new THREE.ShapeGeometry(pointedShape(w + .19, h + .16)), p.toArray(), [0, angle, 0]);
-        add('recess', new THREE.ShapeGeometry(pointedShape(w, h)), p.clone().addScaledVector(dir, .016).toArray(), [0, angle, 0]);
-        add('windows', new THREE.ShapeGeometry(pointedShape(w * .67, h * .86)), p.clone().addScaledVector(dir, .03).add(new THREE.Vector3(0, .05, 0)).toArray(), [0, angle, 0]);
+        add('trim', new THREE.ShapeGeometry(pointedShape(w + .19, h + .16), compact ? 4 : 12), p.toArray(), [0, angle, 0]);
+        add('recess', new THREE.ShapeGeometry(pointedShape(w, h), compact ? 4 : 12), p.clone().addScaledVector(dir, .016).toArray(), [0, angle, 0]);
+        add('windows', new THREE.ShapeGeometry(pointedShape(w * .67, h * .86), compact ? 4 : 12), p.clone().addScaledVector(dir, .03).add(new THREE.Vector3(0, .05, 0)).toArray(), [0, angle, 0]);
         box('trim', p.clone().addScaledVector(dir, .047).add(new THREE.Vector3(0, h * .4, 0)).toArray(), [.045, h * .78, .055], [0, angle, 0]);
         box('trim', p.clone().addScaledVector(dir, .047).add(new THREE.Vector3(0, h * .35, 0)).toArray(), [w, .065, .055], [0, angle, 0]);
     }

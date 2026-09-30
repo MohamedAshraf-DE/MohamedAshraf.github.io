@@ -4,11 +4,12 @@ import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { createVillageGeometry } from './villageGeometry';
 import useSceneMotion from './useSceneMotion';
+import { sceneAsset } from './sceneAssets';
 
 export default function IslandVillage({ details, nightMix, compact }) {
     const frame = useRef(), canvas = useRef(), flowers = useRef();
     const motion = useSceneMotion();
-    const source = useTexture('/scene-assets/materials/fort-wall-diff.webp');
+    const source = useTexture(sceneAsset('materials/fort-wall-diff.webp',compact));
     const resources = useMemo(() => {
         const village = createVillageGeometry(details.grass);
         const texture = source.clone(); texture.wrapS = texture.wrapT = THREE.RepeatWrapping; texture.colorSpace = THREE.SRGBColorSpace; texture.repeat.set(1, 2); texture.needsUpdate = true;

@@ -3,7 +3,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 
 // Original stand-in, not the downloadable LunaEagle asset. Separate anatomical
 // groups make the flight rig reusable when the licensed source file is supplied.
-export function createHippogriffGeometry() {
+export function createHippogriffGeometry(compact = false) {
     const pieces = {};
     let piece = 'body';
     const matrix = new THREE.Object3D();
@@ -15,8 +15,9 @@ export function createHippogriffGeometry() {
         const key = `${piece}:${material}`;
         (pieces[key] ||= []).push(geo);
     }
-    const oval = (mat, p, s, r) => add(mat, new THREE.SphereGeometry(1, 20, 12), p, s, r);
+    const oval = (mat, p, s, r) => add(mat, new THREE.SphereGeometry(1, compact ? 12 : 20, compact ? 8 : 12), p, s, r);
     function tube(mat, points, radii, segments = 20) {
+        if (compact) segments = Math.min(segments, 10);
         const curve = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
         const g = new THREE.TubeGeometry(curve, segments, 1, 8, false);
         const pos = g.attributes.position;
@@ -36,8 +37,9 @@ export function createHippogriffGeometry() {
         const a = new THREE.Vector3(...start), b = new THREE.Vector3(...end);
         const direction = b.clone().sub(a), across = new THREE.Vector3(direction.z, 0, -direction.x).normalize();
         const positions = [], uvs = [], indices = [];
-        for (let j = 0; j <= 8; j++) {
-            const t = j / 8, center = a.clone().lerp(b, t);
+        const segments = compact ? 5 : 8;
+        for (let j = 0; j <= segments; j++) {
+            const t = j / segments, center = a.clone().lerp(b, t);
             center.y += Math.sin(t * Math.PI) * .065;
             const w = Math.pow(Math.sin(Math.PI * Math.pow(t, .65)), .7) * width;
             for (const side of [-1, 0, 1]) {
@@ -45,7 +47,7 @@ export function createHippogriffGeometry() {
                 p.y += side === 0 ? .025 : -.012;
                 positions.push(...p.toArray()); uvs.push((side + 1) / 2, t);
             }
-            if (j < 8) for (let k = 0; k < 2; k++) { const n = j * 3 + k; indices.push(n, n + 3, n + 1, n + 1, n + 3, n + 4); }
+            if (j < segments) for (let k = 0; k < 2; k++) { const n = j * 3 + k; indices.push(n, n + 3, n + 1, n + 1, n + 3, n + 4); }
         }
         const g = new THREE.BufferGeometry();
         g.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));

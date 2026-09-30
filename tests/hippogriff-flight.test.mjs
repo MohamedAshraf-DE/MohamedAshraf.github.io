@@ -88,3 +88,16 @@ test('authored castle and creature buffers are finite and material-batched', () 
         }
     }
 });
+
+test('mobile geometry retains all material parts with a smaller triangle budget', () => {
+    for (const build of [createCastleGeometry, createHippogriffGeometry]) {
+        const desktop = build(false), mobile = build(true);
+        assert.deepEqual(Object.keys(mobile), Object.keys(desktop));
+        const triangles = parts => Object.values(parts).reduce((sum, g) => sum + (g.index?.count ?? g.attributes.position.count) / 3, 0);
+        assert.ok(triangles(mobile) < triangles(desktop) * .8);
+        for (const g of [...Object.values(mobile), ...Object.values(desktop)]) {
+            for (const attr of Object.values(g.attributes)) assert.ok(attr.array.every(Number.isFinite));
+            g.dispose();
+        }
+    }
+});

@@ -1,13 +1,13 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useMemo, useState, useContext } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { PerformanceMonitor } from "@react-three/drei";
 import * as THREE from "three";
 
 import { ThemeContext } from "../context/theme";
-import { HomeInfo } from "../components";
+import HomeInfo from '../components/HomeInfo';
+import SceneLoading from '../components/SceneLoading';
 import { Island } from "../models/Island";
-import HippogriffRider from '../models/HippogriffRider';
 import Atmosphere from "../models/Atmosphere";
 import SceneDiagnostics from '../models/SceneDiagnostics';
 import SceneLighting from '../models/SceneLighting';
@@ -16,6 +16,8 @@ import CinematicLandscape from '../models/CinematicLandscape';
 import CloudLayers from '../models/CloudLayers';
 import SkyEnvironment from '../models/SkyEnvironment';
 import './home-scene.css';
+
+const HippogriffRider = lazy(() => import('../models/HippogriffRider'));
 
 const Home = () => {
     const { theme, environment, setEnvironment } = useContext(ThemeContext);
@@ -26,10 +28,43 @@ const Home = () => {
     const [currentStage, setCurrentStage] = useState(1);
     const [isRotating, setIsRotating] = useState(false);
     const [reduced, setReduced] = useState(false);
+    const [sceneReady, setSceneReady] = useState(false);
+    const [decorated, setDecorated] = useState(false);
+    const [visible, setVisible] = useState(!document.hidden);
+    const loadStart = useRef(performance.now());
+    const readyReported = useRef(false);
+    const reportReady = useCallback(() => {
+        setSceneReady(true);
+        if (import.meta.env.DEV && !readyReported.current) console.info('[Island first ready]', Math.round(performance.now() - loadStart.current), 'ms');
+        readyReported.current = true;
+    }, []);
+    useEffect(() => {
+        if (!sceneReady) return;
+        // Paint the terrain/castle first; construct secondary meshes in idle time.
+        if ('requestIdleCallback' in window) {
+            const id = window.requestIdleCallback(() => setDecorated(true), { timeout: 600 });
+            return () => window.cancelIdleCallback(id);
+        }
+        const id = window.setTimeout(() => setDecorated(true), 32);
+        return () => window.clearTimeout(id);
+    }, [sceneReady]);
+    useEffect(() => {
+        const update = () => setVisible(!document.hidden);
+        document.addEventListener('visibilitychange', update);
+        return () => document.removeEventListener('visibilitychange', update);
+    }, []);
     const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
     const screenWidth = screenSize.width;
     const narrow = screenSize.width / screenSize.height < 1;
-    const compact = screenWidth < 768 || reduced || (navigator.hardwareConcurrency || 8) <= 4;
+    const isMobile = useMemo(() => {
+        if (typeof window === 'undefined') return false;
+        const ua = navigator.userAgent || '';
+        const hasTouch = 'ontouchstart' in window || (navigator.maxTouchPoints || 0) > 0;
+        const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        const smallDimension = Math.min(screenSize.width, screenSize.height) < 768;
+        return isMobileUA || (hasTouch && smallDimension);
+    }, [screenSize]);
+    const compact = isMobile || screenWidth < 768 || reduced || (navigator.hardwareConcurrency || 8) <= 4;
     const sunTarget = useMemo(() => {
         const target = new THREE.Object3D();
         target.position.set(0, 0, -43);
@@ -59,16 +94,19 @@ const Home = () => {
     const [islandScale, islandPosition] = adjustIslandForScreenSize();
 
     return (
-        <section className={`w-full h-screen relative nature-scene ${isDark ? 'scene-night' : 'scene-day'}`}>
+        <section aria-busy={!sceneReady} className={`w-full relative nature-scene ${isDark ? 'scene-night' : 'scene-day'}`}>
+            {!sceneReady && <img className="scene-poster" src={`/scene-assets/mobile/academy/${isDark?'night':'day'}.webp`} alt="" aria-hidden="true" fetchPriority="high" />}
             <div className='scene-intro absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
                 {currentStage && <HomeInfo currentStage={currentStage} />}
             </div>
 
             <Canvas
-                shadows={THREE.PCFSoftShadowMap}
+                frameloop={visible ? 'always' : 'never'}
+                shadows={compact ? false : THREE.PCFSoftShadowMap}
                 dpr={[1, compact ? 1 : narrow ? 1.25 : 1.5]}
-                gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1 }}
-                className={`w-full h-screen bg-transparent ${isRotating ? "cursor-grabbing" : "cursor-grab"}`}
+                gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: compact ? 'mediump' : 'highp', stencil: false }}
+                className={`w-full h-full bg-transparent ${isRotating ? "cursor-grabbing" : "cursor-grab"}`}
+                style={{ opacity: sceneReady ? 1 : 0, transition: 'opacity 300ms ease' }}
                 camera={{ near: 0.1, far: 1800 }}
             >
                 <Atmosphere nightMix={nightMix} sunsetMix={sunsetMix} />
@@ -78,14 +116,16 @@ const Home = () => {
                         onDecline={() => { if (!document.hidden) setReduced(true); }} />
                     <SceneDiagnostics compact={compact} nightMix={nightMix} sunsetMix={sunsetMix} />
                     <SceneLighting environment={environment} nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} target={sunTarget} />
-                    <Suspense fallback={null}><CinematicLandscape nightMix={nightMix} sunsetMix={sunsetMix} /></Suspense>
+                    <Suspense fallback={null}><CinematicLandscape nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} /></Suspense>
                     <CloudLayers nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} narrow={narrow} />
                     <WorldCamera />
-                    <Suspense fallback={null}><HippogriffRider narrow={narrow} compact={compact} nightMix={nightMix} /></Suspense>
+                    {decorated && <Suspense fallback={null}><HippogriffRider narrow={narrow} compact={compact} nightMix={nightMix} /></Suspense>}
                     <Suspense fallback={null}>
                     <Island
                         nightMix={nightMix}
                         compact={compact}
+                        decorated={decorated}
+                        onReady={reportReady}
                         setIsRotating={setIsRotating}
                         setCurrentStage={setCurrentStage}
                         position={islandPosition}
@@ -97,6 +137,7 @@ const Home = () => {
             </Canvas>
 
             <div className="scene-vignette" aria-hidden="true" />
+            {!sceneReady && <SceneLoading />}
 
             <div className="environment-switch" role="group" aria-label="World lighting">
                 {['day','sunset','night'].map(mode=><button key={mode} type="button" aria-pressed={environment===mode}

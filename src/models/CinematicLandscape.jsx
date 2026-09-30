@@ -3,14 +3,14 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import useSceneMotion from './useSceneMotion';
+import { sceneAsset } from './sceneAssets';
 
 const imageAspect = 1672 / 941;
-const urls = ['/scene-assets/academy/day.webp', '/scene-assets/academy/night.webp', '/scene-assets/academy/motion-mask.svg'];
 
 // A camera-projected relief mesh: foreground cliffs, academy, lake, and sky
 // occupy different distances. Intended for restrained parallax, not free flight.
-function landscapeGeometry(aspect, fov) {
-    const geometry = new THREE.PlaneGeometry(2, 2, 112, 64);
+function landscapeGeometry(aspect, fov, compact) {
+    const geometry = new THREE.PlaneGeometry(2, 2, compact ? 48 : 112, compact ? 28 : 64);
     const position = geometry.attributes.position, uv = geometry.attributes.uv;
     const coverX = Math.max(1, imageAspect / aspect) * 1.06;
     const coverY = Math.max(1, aspect / imageAspect) * 1.06;
@@ -30,11 +30,11 @@ function landscapeGeometry(aspect, fov) {
     return geometry;
 }
 
-export default function CinematicLandscape({ nightMix, sunsetMix }) {
-    const textures = useTexture(urls);
+export default function CinematicLandscape({ nightMix, sunsetMix, compact = false }) {
+    const textures = useTexture([sceneAsset('academy/day.webp',compact),sceneAsset('academy/night.webp',compact),'/scene-assets/academy/motion-mask.svg']);
     const motion = useSceneMotion();
     const { size, camera } = useThree();
-    const geometry = useMemo(() => landscapeGeometry(size.width / size.height, camera.fov), [size.width, size.height, camera.fov]);
+    const geometry = useMemo(() => landscapeGeometry(size.width / size.height, camera.fov,compact), [size.width, size.height, camera.fov,compact]);
     const uniforms = useMemo(() => {
         textures.slice(0, 2).forEach(texture => { texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 4; });
         textures[2].colorSpace = THREE.NoColorSpace;
@@ -74,5 +74,3 @@ export default function CinematicLandscape({ nightMix, sunsetMix }) {
                 }`} />
     </mesh>;
 }
-
-useTexture.preload(urls);

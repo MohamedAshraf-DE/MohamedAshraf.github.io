@@ -70,8 +70,8 @@ export default function HippogriffRider({ narrow, compact, nightMix }) {
         };
         const cape = windCloth(new THREE.MeshStandardMaterial({ color: '#171e2a', roughness: .94, side: THREE.DoubleSide }), wind);
         const depth = windCloth(new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, side: THREE.DoubleSide }), wind);
-        return { geometries: createHippogriffGeometry(), materials, cape: capeGeometry(), capeMaterial: cape, depth, wind };
-    }, []);
+        return { geometries: createHippogriffGeometry(compact), materials, cape: capeGeometry(), capeMaterial: cape, depth, wind };
+    }, [compact]);
     useEffect(() => {
         const query = window.matchMedia('(prefers-reduced-motion: reduce)');
         const update = () => { reducedMotion.current = query.matches; };

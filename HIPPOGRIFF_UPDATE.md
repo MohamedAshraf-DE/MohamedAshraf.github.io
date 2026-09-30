@@ -1,50 +1,56 @@
 # Castle and Hippogriff scene — 2026-09-30
 
-The home island now carries an original miniature Gothic academy: Great Hall,
-staircase tower, satellite spires, entrance arch, courtyard and cloister.
-Its stone/slate use the project's existing Poly Haven scans; its windows glow
-with the same day/sunset/night transition as the landscape. The old cottage
-and fence geometry is filtered from the shared island mesh, preserving the
-floating rock and outer grove.
+The floating island carries an original miniature Gothic academy and a village:
+four animated old windmills and eight cottages, distributed around the four text
+viewpoints. Paths, flowers, benches, chimney smoke and warm night windows add life.
+The castle and village reuse the project's existing CC0 Poly Haven material scans.
 
-The dragon has been replaced in the active scene with an **original procedural
-Hippogriff stand-in**, with a Harry-inspired rider. This is **not the LunaEagle
-Sketchfab model**, and is not a game-quality realistic character. The linked
-Sketchfab page was inspected: its download opens a sign-in dialog. No source
-mesh or texture was extracted from its viewer. To finish the requested asset
-replacement, supply the officially downloaded GLB/glTF (including textures)
-or original FBX. Its skeleton, pose, orientation and license attribution must
-then be inspected before fitting the flight animation and rider to it.
+The active Hippogriff and Harry-inspired rider are original procedural geometry.
+The user-selected LunaEagle Sketchfab model was reviewed as a reference but has not
+been downloaded or included; its download requires sign-in. This iteration keeps
+the original model that the user approved. If that external asset is added later,
+its license, skeleton and orientation must be reviewed before integrating it.
 
-Reference: https://sketchfab.com/3d-models/hippogriff-5e43823e23e14478b553dd333c083e79
-Author shown on that page: LunaEagle. Listed license: CC Attribution.
-The user-supplied Hogwarts Legacy clip was reviewed locally at 5 and 12 seconds.
+## Motion and navigation
 
-## Motion implementation
+- Restored the original dragon's exact eight-point route, arc-length sampling,
+  72-second lap and mobile X projection; enlarged the Hippogriff approximately 21%.
+- Smooth banking, wing strokes/gliding, delayed rider lean, cape and tail movement.
+- White day / charcoal night coat; hand-held bronze lantern lights only at night,
+  with subtle sway and flicker. Motion is an animation approximation, not CFD.
+- Masked lake ripples/reflections and drifting clouds preserve the static landscape.
+- Four windmills rotate; reduced-motion preferences and hidden tabs pause or reduce
+  ambient motion. The canvas stops rendering while the page is hidden.
+- A 44 px Home icon stays at bottom-right on every inner page, including Recruiter.
+  Mobile menu also includes Home; returning resets scroll to the top.
 
-- Arc-length orbit, speed adjustment on climbs and bank derived from curvature.
-- Power strokes alternate with gliding; wrists lag behind shoulder movement.
-- Spring-damped lift response and independently delayed rider lean.
-- Wind-driven tail, folded legs, stabilized head and shoulder-pinned flowing cape.
-- White daytime feathers / charcoal-black nighttime feathers, smoothly blended.
-- Portrait orbit leaves room for the inner wing around the castle.
-- Reduced-motion preference lowers travel speed, wing amplitude and gusts;
-  hidden tabs pause the simulation. This is an aerodynamic animation
-  approximation, not a fluid or full cloth physics solver.
+## Mobile and loading
+
+- Smaller textures in public/scene-assets/mobile, reproduced by
+  scripts/optimize-scene-assets.py. Eight assets total 526,458 bytes versus
+  2,609,810 bytes for the originals: 79.8% smaller. Desktop originals are retained.
+- Compact castle/creature geometry, fewer background vertices, simplified terrain,
+  reduced foliage/rocks and 1x pixel ratio lower the mobile rendering budget.
+- Removed the unused 1.6 MB dragon preload. Pages load separately; the Hippogriff
+  and village modules load after the terrain/castle's first ready render.
+- A lightweight background and progress indicator provide feedback during loading.
+- Portrait lighting controls and Recruiter button are separated, with safe-area
+  spacing; horizontal island dragging allows vertical page scrolling.
 
 ## Validation
 
-`node --test tests/hippogriff-flight.test.mjs` covers 30/60/120/144 Hz consistency,
-loop continuity, castle clearance, spring bounds, gliding, stalled-frame
-recovery and finite geometry buffers. Five tests pass.
+node --test tests/hippogriff-flight.test.mjs: seven tests pass, covering frame-rate
+independence, loop continuity, legacy route/timing, village layout, bounded motion,
+finite geometry and the lower mobile triangle budget with all material parts kept.
 
-The modified files pass ESLint. Repository-wide lint still reports existing
-unused variables in `LoginCharacters.jsx` and `Services.jsx`, plus an existing
-hook dependency warning. Those unrelated files were not changed.
+Targeted ESLint and production build pass. The build retains a large Three.js
+shared chunk warning. Repository-wide lint has unrelated existing findings in
+LoginCharacters.jsx and Services.jsx.
 
-Browser review included day/night, close views of both coat colors, the full
-scene, and a 390 x 844 portrait iframe. Review HTML and the local reference
-video are only in ignored `.scene-checkpoints/` and are not part of the build.
+Browser review: desktop day/night, lantern close-up, a 390 x 844 portrait iframe,
+mobile Certificates navigation and fixed Home return. Local development first-ready
+samples were about 1.1–1.5 seconds; this is not a cold mobile network benchmark.
+The compact preview reported about 101k triangles at 1x DPR. QA HTML and screenshots
+are ignored in .scene-checkpoints and are not part of the build.
 
-The pre-existing dragon asset/source remain on disk but Home no longer imports
-them. Existing user edits were preserved; no deployment or Git commit was made.
+No deployment or Git commit was made for these changes.

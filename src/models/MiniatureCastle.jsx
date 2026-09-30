@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import { createCastleGeometry } from './castleGeometry';
+import { sceneAsset } from './sceneAssets';
 
 function masonryMaterial(map, color, scale) {
     const material = new THREE.MeshStandardMaterial({ color, roughness: .91 });
@@ -25,11 +26,11 @@ function masonryMaterial(map, color, scale) {
     return material;
 }
 
-export default function MiniatureCastle({ nightMix }) {
-    const textures = useTexture(['/scene-assets/materials/fort-wall-diff.webp', '/scene-assets/materials/roof_slates_02-Diffuse.webp']);
+export default function MiniatureCastle({ nightMix, compact = false, onReady }) {
+    const textures = useTexture([sceneAsset('materials/fort-wall-diff.webp',compact), sceneAsset('materials/roof_slates_02-Diffuse.webp',compact)]);
     const resources = useMemo(() => {
         const maps = textures.map(t => { const copy = t.clone(); copy.wrapS = copy.wrapT = THREE.RepeatWrapping; copy.colorSpace = THREE.SRGBColorSpace; copy.anisotropy = 4; copy.needsUpdate = true; return copy; });
-        const geometries = createCastleGeometry();
+        const geometries = createCastleGeometry(compact);
         const materials = {
             stone: masonryMaterial(maps[0], '#d2c6ae', .3),
             trim: masonryMaterial(maps[0], '#e6d6b4', .35),
@@ -38,7 +39,8 @@ export default function MiniatureCastle({ nightMix }) {
             windows: new THREE.MeshStandardMaterial({ color: '#738d8a', emissive: '#ffb85c', emissiveIntensity: 0, roughness: .38, metalness: .25, side: THREE.DoubleSide }),
         };
         return { geometries, materials, maps };
-    }, [textures]);
+    }, [textures,compact]);
+    useEffect(() => { onReady?.(); }, [onReady]);
     useEffect(() => () => {
         Object.values(resources.geometries).forEach(g => g.dispose());
         Object.values(resources.materials).forEach(m => m.dispose());

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { mergeVertices } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { sceneAsset } from './sceneAssets';
 
 // Seeded detail placement keeps the island identical across remounts and devices.
 export function randomGenerator(seed = 71) {
@@ -20,9 +21,9 @@ float natureNoise(vec3 p) {
 }
 `;
 
-let scannedSurfaces;
-function surfaceTextures() {
-    if (scannedSurfaces) return scannedSurfaces;
+const surfaceCache = new Map();
+function surfaceTextures(compact = false) {
+    if (surfaceCache.has(compact)) return surfaceCache.get(compact);
     const loader = new THREE.TextureLoader();
     const ready = { value: 0 };
     let loaded = 0;
@@ -32,21 +33,22 @@ function surfaceTextures() {
         slateScan: 'roof_slates_02-Diffuse.webp',
         wallScan: 'fort-wall-diff.webp',
     };
-    scannedSurfaces = { scanReady: ready };
+    const scannedSurfaces = { scanReady: ready };
+    surfaceCache.set(compact, scannedSurfaces);
     Object.entries(paths).forEach(([name, path]) => {
-        const texture = loader.load(`/scene-assets/materials/${path}`, () => {
+        const texture = loader.load(sceneAsset(`materials/${path}`, compact), () => {
             loaded++;
             if (loaded === Object.keys(paths).length) ready.value = 1;
         });
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
         texture.colorSpace = THREE.SRGBColorSpace;
-        texture.anisotropy = 4;
+        texture.anisotropy = compact ? 1 : 4;
         scannedSurfaces[name] = { value: texture };
     });
     return scannedSurfaces;
 }
 
-export function naturalMaterial(source, canopies = []) {
+export function naturalMaterial(source, canopies = [], compact = false) {
     const material = source.clone();
     material.emissiveIntensity = 0.035;
     material.metalness = 0;
@@ -55,6 +57,53 @@ export function naturalMaterial(source, canopies = []) {
     material.roughnessMap = null;
     material.userData.cabinNight = { value: 0 };
     material.userData.natureTime = { value: 0 };
+
+    if (compact) {
+        material.onBeforeCompile = (shader) => {
+            Object.assign(shader.uniforms, surfaceTextures(true));
+            shader.uniforms.cabinNight = material.userData.cabinNight;
+            shader.vertexShader = 'varying vec3 naturePosition; varying vec3 natureNormal;\n' + shader.vertexShader;
+            shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>',
+                '#include <begin_vertex>\n naturePosition = position; natureNormal = normal;');
+            shader.fragmentShader = `uniform sampler2D rockScan;uniform sampler2D meadowScan;uniform sampler2D slateScan;uniform sampler2D wallScan;uniform float scanReady;
+                uniform float cabinNight; varying vec3 naturePosition; varying vec3 natureNormal;\n` + shader.fragmentShader;
+            shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>', `
+                #include <map_fragment>
+                float warmWindow = step(0.90,diffuseColor.r) * step(0.68,diffuseColor.g)
+                    * (1.0-step(0.89,diffuseColor.g)) * step(0.40,diffuseColor.b)
+                    * (1.0-step(0.60,diffuseColor.b)) * step(4.0,naturePosition.y)
+                    * (1.0-step(14.0,naturePosition.y)) * (1.0-step(0.45,abs(natureNormal.y)));
+                float roofMask=step(diffuseColor.g*1.48,diffuseColor.r)*step(.12,diffuseColor.r)*step(1.5,naturePosition.y);
+                float plaster=step(.5,diffuseColor.r)*step(.4,diffuseColor.g)*step(.25,diffuseColor.b)*(1.0-warmWindow);
+                float green = step(diffuseColor.r * 0.85, diffuseColor.g) * step(diffuseColor.b * 1.4, diffuseColor.g);
+                float ground = max(green * (1.0 - smoothstep(1.8, 3.0, naturePosition.y)),
+                    step(16.5,length(naturePosition.xz))*step(.75,natureNormal.y)*(1.0-smoothstep(2.5,4.0,naturePosition.y)));
+                vec3 meadow = vec3(0.18,0.25,0.08);
+                vec3 stone = vec3(0.28,0.28,0.24);
+                float top = smoothstep(0.35,0.85,natureNormal.y);
+                diffuseColor.rgb = mix(diffuseColor.rgb, mix(stone,meadow,top), ground * 0.88);
+                float cliff = smoothstep(0.5,2.5,-naturePosition.y);
+                diffuseColor.rgb = mix(diffuseColor.rgb, stone, cliff);
+                vec3 scannedRock = texture2D(rockScan, (abs(natureNormal.y) > 0.6 ? naturePosition.xz : naturePosition.zy) * 0.18).rgb;
+                vec2 wallUV = abs(natureNormal.z) > abs(natureNormal.x) ? naturePosition.xy : naturePosition.zy;
+                vec3 scannedWall = texture2D(wallScan, wallUV * 0.14).rgb;
+                vec3 scannedRoof = texture2D(slateScan, vec2(wallUV.x, naturePosition.y) * 0.12).rgb;
+                vec3 scannedMeadow = texture2D(meadowScan, naturePosition.xz * 0.07).rgb;
+                vec3 organicTop = mix(scannedRock, scannedMeadow * vec3(0.48, 0.73, 0.44), top);
+                diffuseColor.rgb = mix(diffuseColor.rgb, scannedWall * 0.8, plaster * scanReady * 0.92);
+                diffuseColor.rgb = mix(diffuseColor.rgb, organicTop, ground * scanReady * 0.93);
+                diffuseColor.rgb = mix(diffuseColor.rgb, scannedRock * 0.82, cliff * scanReady);
+                diffuseColor.rgb = mix(diffuseColor.rgb, scannedRoof * vec3(0.34, 0.45, 0.54), roofMask * scanReady);
+            `);
+            shader.fragmentShader = shader.fragmentShader.replace('#include <emissivemap_fragment>', `
+                #include <emissivemap_fragment>
+                totalEmissiveRadiance += vec3(1.0,0.42,0.10) * warmWindow * cabinNight * 1.3;
+            `);
+        };
+        material.customProgramCacheKey = () => 'island-scanned-compact-v1';
+        return material;
+    }
+
     // Soft canopy occlusion is baked into the ground shader, avoiding an SSAO pass.
     const treeShades = [...canopies].sort((a,b)=>b.size.lengthSq()-a.size.lengthSq()).slice(0,12)
         .map(({center,size})=>new THREE.Vector4(center.x,center.z,Math.max(0.8,size.x*0.55),Math.max(0.8,size.z*0.55)));
@@ -150,8 +199,11 @@ export function naturalMaterial(source, canopies = []) {
 // geometry too, including across StrictMode renders and visits to other pages.
 const preparedIslands = new WeakMap();
 
-export function prepareIsland(nodes, material) {
-    if(preparedIslands.has(nodes)) return preparedIslands.get(nodes);
+export function prepareIsland(nodes, material, compact = false) {
+    if(!preparedIslands.has(nodes)) preparedIslands.set(nodes, new Map());
+    const cache = preparedIslands.get(nodes);
+    const key = compact ? 'compact' : 'desktop';
+    if(cache.has(key)) return cache.get(key);
     const image = material.map.image;
     const canvas = document.createElement('canvas');
     canvas.width = image.width; canvas.height = image.height;
@@ -201,7 +253,7 @@ export function prepareIsland(nodes, material) {
                 (height > 1.35 || (height > -1 && Math.abs(geometry.attributes.normal.getY(i)) < .65))) continue;
             else if (Math.min(p.getY(i),p.getY(i+1),p.getY(i+2)) < -0.5) {
                 const vertices=[i,i+1,i+2].map(j=>[p.getX(j),p.getY(j),p.getZ(j),uv.getX(j),uv.getY(j)]);
-                cliffFace(...vertices,2);
+                cliffFace(...vertices, compact ? 1 : 2);
             } else keep.push(i, i+1, i+2);
             // Only grow details on upward-facing, grass-coloured ground.
             const a = new THREE.Vector3().fromBufferAttribute(p, i);
@@ -253,6 +305,6 @@ export function prepareIsland(nodes, material) {
         }
     });
     const details={surfaces,canopies,grass,rocks};
-    preparedIslands.set(nodes,details);
+    cache.set(key,details);
     return details;
 }
