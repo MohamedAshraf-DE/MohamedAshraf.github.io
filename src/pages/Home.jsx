@@ -65,6 +65,7 @@ const Home = () => {
         return isMobileUA || (hasTouch && smallDimension);
     }, [screenSize]);
     const compact = isMobile || screenWidth < 768 || reduced || (navigator.hardwareConcurrency || 8) <= 4;
+    const mobileBackground = isMobile || screenWidth < 768;
     const sunTarget = useMemo(() => {
         const target = new THREE.Object3D();
         target.position.set(0, 0, -43);
@@ -95,7 +96,14 @@ const Home = () => {
 
     return (
         <section aria-busy={!sceneReady} className={`w-full relative nature-scene ${isDark ? 'scene-night' : 'scene-day'}`}>
-            {!sceneReady && <img className="scene-poster" src={`/scene-assets/academy/${isDark?'night':'day'}.webp`} alt="" aria-hidden="true" fetchPriority="high" />}
+            {!sceneReady && !mobileBackground && <img className="scene-poster" src={`/scene-assets/academy/${isDark?'night':'day'}.webp`} alt="" aria-hidden="true" fetchPriority="high" />}
+            {mobileBackground && (
+                <div className={`mobile-scene-background mobile-bg-${environment}`} aria-hidden="true">
+                    <img className="mobile-bg-image mobile-bg-day" src="/scene-assets/academy/day.webp" alt="" fetchPriority="high" />
+                    <img className="mobile-bg-image mobile-bg-night" src="/scene-assets/academy/night.webp" alt="" fetchPriority="high" />
+                    <div className="mobile-bg-sunset-tint" />
+                </div>
+            )}
             <div className='scene-intro absolute top-28 left-0 right-0 z-10 flex items-center justify-center'>
                 {currentStage && <HomeInfo currentStage={currentStage} />}
             </div>
@@ -104,19 +112,19 @@ const Home = () => {
                 frameloop={visible ? 'always' : 'never'}
                 shadows={compact ? false : THREE.PCFSoftShadowMap}
                 dpr={[1, compact ? 1 : narrow ? 1.25 : 1.5]}
-                gl={{ antialias: !compact, alpha: false, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: compact ? 'mediump' : 'highp', stencil: false }}
+                gl={{ antialias: !compact, alpha: mobileBackground, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1, precision: compact ? 'mediump' : 'highp', stencil: false }}
                 className={`w-full h-full bg-transparent ${isRotating ? "cursor-grabbing" : "cursor-grab"}`}
                 style={{ opacity: sceneReady ? 1 : 0, transition: 'opacity 300ms ease' }}
                 camera={{ near: 0.1, far: 1800 }}
             >
-                <Atmosphere nightMix={nightMix} sunsetMix={sunsetMix} />
+                <Atmosphere nightMix={nightMix} sunsetMix={sunsetMix} hideSky={mobileBackground} />
                 <SkyEnvironment />
                 <>
                     <PerformanceMonitor ms={500} iterations={10} bounds={() => [45,65]}
                         onDecline={() => { if (!document.hidden) setReduced(true); }} />
                     <SceneDiagnostics compact={compact} nightMix={nightMix} sunsetMix={sunsetMix} />
                     <SceneLighting environment={environment} nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} target={sunTarget} />
-                    <Suspense fallback={null}><CinematicLandscape nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} /></Suspense>
+                    {!mobileBackground && <Suspense fallback={null}><CinematicLandscape nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} /></Suspense>}
                     <CloudLayers nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} narrow={narrow} />
                     <WorldCamera />
                     {decorated && <Suspense fallback={null}><HippogriffRider narrow={narrow} compact={compact} nightMix={nightMix} /></Suspense>}
