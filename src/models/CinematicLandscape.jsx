@@ -3,7 +3,6 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import useSceneMotion from './useSceneMotion';
-import { sceneAsset } from './sceneAssets';
 
 const imageAspect = 1672 / 941;
 
@@ -31,7 +30,7 @@ function landscapeGeometry(aspect, fov, compact) {
 }
 
 export default function CinematicLandscape({ nightMix, sunsetMix, compact = false }) {
-    const textures = useTexture([sceneAsset('academy/day.webp',compact),sceneAsset('academy/night.webp',compact),'/scene-assets/academy/motion-mask.svg']);
+    const textures = useTexture(['/scene-assets/academy/day.webp','/scene-assets/academy/night.webp','/scene-assets/academy/motion-mask.svg']);
     const motion = useSceneMotion();
     const { size, camera } = useThree();
     const geometry = useMemo(() => landscapeGeometry(size.width / size.height, camera.fov,compact), [size.width, size.height, camera.fov,compact]);
