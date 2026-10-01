@@ -45,11 +45,24 @@ The academy day/night landscape, hornbeam foliage cutout and dragon scale textur
 
 The Veyr dragon/rider mesh and animation were authored for this project in Blender via Higgsfield 3D Jutsu. Source: `.scene-sources/dragon_rider.py`. The webpage applies an additional generated skin texture independently of the exported GLB.
 
-## Miniature castle and interim Hippogriff
+## Miniature castle and inactive Hippogriff
 
-The active home scene now uses original procedural castle and Hippogriff/rider
-geometry, authored in `src/models/castleGeometry.js` and
-`src/models/hippogriffGeometry.js`. The old dragon is no longer imported by Home.
+The active home scene uses the original procedural castle in
+`src/models/castleGeometry.js` and the original colourful creature in `bird.glb`,
+restored through `Bird.jsx` with its original size, materials and animation.
+The original procedural Hippogriff/rider in `src/models/hippogriffGeometry.js`
+is retained as inactive source. Home does not import it. Later local Blender
+experiments are not included in this published restoration.
+
+## Restored original flying creature
+
+`src/assets/3d/bird.glb` is the existing **phoenix bird** model by
+NORBERTO-3D, as identified by the GLB's embedded asset metadata.
+Source: https://sketchfab.com/3d-models/phoenix-bird-844ba0cf144a413ea92c779f18912042
+Author: https://sketchfab.com/norberto3d
+License: Creative Commons Attribution 4.0,
+https://creativecommons.org/licenses/by/4.0/
+The existing model, textures and embedded `Take 001` animation are unchanged.
 The castle reuses the CC0 Poly Haven material scans credited above.
 
 The LunaEagle Hippogriff at

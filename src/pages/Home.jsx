@@ -17,7 +17,7 @@ import CloudLayers from '../models/CloudLayers';
 import SkyEnvironment from '../models/SkyEnvironment';
 import './home-scene.css';
 
-const HippogriffRider = lazy(() => import('../models/HippogriffRider'));
+const Bird = lazy(() => import('../models/Bird').then(module => ({ default: module.Bird })));
 
 const Home = () => {
     const { theme, environment, setEnvironment } = useContext(ThemeContext);
@@ -127,7 +127,7 @@ const Home = () => {
                     {!mobileBackground && <Suspense fallback={null}><CinematicLandscape nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} /></Suspense>}
                     <CloudLayers nightMix={nightMix} sunsetMix={sunsetMix} compact={compact} narrow={narrow} />
                     <WorldCamera />
-                    {decorated && <Suspense fallback={null}><HippogriffRider narrow={narrow} compact={compact} nightMix={nightMix} /></Suspense>}
+                    {decorated && <Suspense fallback={null}><Bird /></Suspense>}
                     <Suspense fallback={null}>
                     <Island
                         nightMix={nightMix}

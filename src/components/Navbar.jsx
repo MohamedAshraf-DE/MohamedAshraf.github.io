@@ -31,19 +31,18 @@ const Navbar = () => {
         return baseClass;
     };
 
-    const homeLink = <NavLink to="/" aria-label="Home" title="Back to Home"
+    const homeLink = <NavLink to="/" end aria-label="Home" title="Back to Home"
         onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); }}
         className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-400/30 bg-white/80 text-slate-700 shadow-sm backdrop-blur-md transition-colors hover:bg-white hover:text-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-500 dark:bg-slate-800/80 dark:text-slate-100 dark:hover:bg-slate-700">
         <svg aria-hidden="true" width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
             <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" />
         </svg>
     </NavLink>;
-    const floatingHome = location.pathname !== '/' && <div className="fixed right-5 z-50" style={{ bottom: 'max(20px, env(safe-area-inset-bottom))' }}>{homeLink}</div>;
-    if (location.pathname === "/recruiter") return floatingHome;
+    // Recruiter Mode already has a top navigation and a 3D Mode return link.
+    if (location.pathname === "/recruiter") return null;
 
     return (
         <header className="header flex items-center justify-between px-4 py-2 absolute top-0 w-full z-50 bg-transparent">
-            {floatingHome}
             {/* Clickable Rounded Logo to LinkedIn */}
             <a
                 href="https://www.linkedin.com/in/mohamed--ashraff/"
@@ -59,7 +58,8 @@ const Navbar = () => {
             </a>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex gap-7 items-center">
+            <nav aria-label="Main navigation" className="hidden lg:flex gap-4 xl:gap-7 items-center">
+                {homeLink}
                 <NavLink to="/about" className={({ isActive }) => getLinkClass(isActive)}>About</NavLink>
                 <NavLink to="/projects" className={({ isActive }) => getLinkClass(isActive)}>Projects</NavLink>
                 <NavLink to="/certificates" className={({ isActive }) => getLinkClass(isActive)}>Certificates</NavLink>
@@ -124,10 +124,10 @@ const Navbar = () => {
                     />
                     <div className="fixed top-[72px] left-4 right-4 z-50 max-h-[calc(100svh-88px)] overflow-y-auto bg-white dark:bg-[#131521] shadow-2xl rounded-2xl p-4 flex flex-col items-center border border-gray-200 dark:border-white/10 lg:hidden">
                         <nav id="mobile-navigation" className="flex flex-col w-full">
-                            {location.pathname !== '/' && (
-                                <NavLink to="/" onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'instant' }); }} className={({ isActive }) => getMobileLinkClass(isActive)}>Home</NavLink>
-                            )}
-                            <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>About</NavLink>
+                            <div className="flex items-center gap-3">
+                                {homeLink}
+                                <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>About</NavLink>
+                            </div>
                             <NavLink to="/projects" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Projects</NavLink>
                             <NavLink to="/certificates" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Certificates</NavLink>
                             <NavLink to="/services" onClick={() => setIsMobileMenuOpen(false)} className={({ isActive }) => getMobileLinkClass(isActive)}>Services</NavLink>
